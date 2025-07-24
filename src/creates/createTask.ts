@@ -1,12 +1,6 @@
 import moment from 'moment-timezone';
 import { Bundle, ZObject } from 'zapier-platform-core';
 
-interface Zap {
-  user: {
-    timezone: string;
-  };
-}
-
 interface DateRange {
   start: {
     date: string;
@@ -67,15 +61,8 @@ interface CreateAssigneeResponseError {
 
 type CreateAssigneeResponse = CreateAssigneeResponseOk | CreateAssigneeResponseError;
 
-function isZap(zap: any): zap is Zap {
-  return typeof zap === 'object' && 'user' in zap && typeof zap.user === 'object';
-}
-
 const taskDueDateReqVariables = (z: ZObject, bundle: Bundle) => {
-  let zapierProfileTimezone = 'Etc/UTC';
-  if (isZap(bundle.meta.zap)) {
-    zapierProfileTimezone = bundle.meta.zap.user.timezone;
-  }
+  const  zapierProfileTimezone = bundle.meta.timezone ?? 'Etc/UTC';
 
   let date: DateRange | null = null;
 
@@ -122,14 +109,14 @@ const taskDueDateReqVariables = (z: ZObject, bundle: Bundle) => {
 const perform = async (z: ZObject, bundle: Bundle) => {
   let task: CreateTaskInput = {
     contentType: 'text/markdown',
-    content: bundle.inputData.content,
+    content: bundle.inputData.content as string,
     placement: 'beforeend',
   };
   if (bundle.inputData.block_id != null) {
     task = {
-      taskId: bundle.inputData.block_id,
+      taskId: bundle.inputData.block_id as string,
       contentType: 'text/markdown',
-      content: bundle.inputData.content,
+      content: bundle.inputData.content as string,
       placement: 'beforeend',
     };
   }
