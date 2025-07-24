@@ -1,6 +1,6 @@
 {
   "name": "taskade",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Taskade is a collaboration platform for remote teams to organize and manage projects.",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.37",
     "uuid": "^9.0.0",
-    "zapier-platform-core": "15.19.0"
+    "zapier-platform-core": "17.4.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
