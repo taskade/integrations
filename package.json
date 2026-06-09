@@ -1,6 +1,6 @@
 {
   "name": "taskade",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Taskade is a collaboration platform for remote teams to organize and manage projects.",
   "main": "index.js",
   "scripts": {
@@ -14,26 +14,20 @@
     "npm": ">=5.6.0"
   },
   "dependencies": {
-    "@apollo/client": "^3.6.9",
     "@taskade/eslint-plugin": "0.4.0",
     "cross-fetch": "^3.1.5",
-    "graphql": "^16.6.0",
-    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.37",
-    "uuid": "^9.0.0",
     "zapier-platform-core": "17.4.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
-    "@types/lodash": "^4.17.13",
-    "@types/luxon": "^3.0.1",
     "@types/node": "^18.12.0",
     "@types/node-fetch": "^2.6.12",
-    "@types/uuid": "^8.3.4",
     "jest": "^26.6.3",
     "rimraf": "^3.0.2",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "zapier-platform-schema": "17.4.0"
   },
   "private": true,
   "zapier": {
