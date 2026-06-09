@@ -1,32 +1,65 @@
-# Zapier
-Zapier integration for Taskade.
+# Taskade Integrations
 
-## Overview
-This repository contains the Zapier integration for Taskade. For more details on how to use the integration, check out the [Zapier Integration Guide](https://help.taskade.com/en/articles/8958540-zapier-integration).
+The public source-of-truth for Taskade actions & triggers across automation platforms — starting with the official [Zapier integration](https://zapier.com/apps/taskade/integrations), built entirely on the [Taskade public API](https://docs.taskade.com/).
 
-## Features
-- Automate task management and workflows.
-- Connect Taskade with popular apps like Slack, Gmail, Google Sheets, and more.
-- Trigger actions in Taskade based on events in other apps, or vice versa.
+Building a Taskade integration for another platform (n8n, Activepieces, Make, Pipedream, or your own)? Everything here runs against the documented public API — copy freely. Live OpenAPI specs:
 
-## Prerequisites
-Before using this project, ensure you have the following:
-- [Zapier CLI](https://docs.zapier.com/platform/build-cli/overview#quick-setup-guide) installed.
-- A valid Taskade account.
-- Node.js installed on your machine.
-- Yarn package manager.
+- v1 REST API: `https://www.taskade.com/api/v1` — [spec](https://www.taskade.com/api/documentation/v1/json)
+- v2 Action API: `https://www.taskade.com/api/v2` — [spec](https://www.taskade.com/api/documentation/v2/json)
 
-## Development Workflow
+## Zapier app capabilities
 
-### Bump version
-1. Update version in `package.json`
+| Type | Key | What it does |
+|---|---|---|
+| Trigger | `task_due` | Fires when a task is due (instant/webhook) |
+| Action | `create_task` | Create a task — with due date, assignee; content > 2000 chars auto-chunks into sibling tasks |
+| Action | `complete_task` | Mark a task complete, or reopen it |
+| Action | `update_task` | Update a task's content |
+| Action | `delete_task` | Delete a task |
+| Action | `move_task` | Reorder/reparent a task within a project |
+| Action | `create_project` | Create a project from Markdown |
+| Action | `create_project_from_template` | Create a project from a template |
+| Action | `run_agent` | Prompt a Taskade AI agent, get its response (v2 `promptAgent`) |
+| Action | `custom_api_call` | Authenticated request to any Taskade API endpoint |
+| Search | `find_task` | Find a task in a project by text |
+| Search | `find_project` | Find a project by name |
 
-### Build
-1. `yarn build`
-2. `zapier build`
-3. `zapier push`
+Hidden dropdown helpers (not user-facing): `get_all_spaces`, `get_all_projects`, `get_all_blocks`, `get_all_assignable_members`, `get_all_tasks`, `get_all_project_templates`.
 
-### Log
-1. `zapier logs`
-2. `zapier logs --type=console`
-3. `zapier logs --type=http --detailed`
+Auth: OAuth2 (`www.taskade.com/oauth2/*`). The API also supports [Personal Access Tokens](https://www.taskade.com/settings/api) (`Authorization: Bearer tskdp_…`) for other platforms.
+
+> Note: the `task_due` trigger currently uses Taskade-internal webhook routes. A public webhook-subscription API (`POST /api/v2/subscribeWebhook`) is in progress — once live, event triggers become portable to any platform.
+
+## Development
+
+Prerequisites: Node ≥ 18, Yarn, [Zapier CLI](https://docs.zapier.com/platform/build-cli/overview#quick-setup-guide).
+
+```bash
+yarn install
+yarn build        # tsc -> lib/
+yarn test         # builds, then validates the app against Zapier's official schema
+```
+
+The test suite validates the full app definition with `zapier-platform-schema`'s `validateAppDefinition` — the same check `zapier validate` runs — so schema regressions fail in CI before they reach a deploy.
+
+### Release
+
+1. Bump `version` in `package.json`
+2. `yarn build && zapier build && zapier push`
+
+Deploying to the live Zapier app is a deliberate, manual step — never automatic on merge.
+
+### Logs
+
+```bash
+zapier logs
+zapier logs --type=console
+zapier logs --type=http --detailed
+```
+
+## Roadmap
+
+- Platform-agnostic operation manifest + per-platform codegen (n8n node, Activepieces piece rendered from one source)
+- Portable event triggers once the public webhook-subscription API ships
+
+See the [Zapier Integration Guide](https://help.taskade.com/en/articles/8958540-zapier-integration) for end-user docs.
