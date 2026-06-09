@@ -4,7 +4,9 @@ import { ApiResponse, parseOk, request } from '../client';
 import { projectField, spaceField, taskField } from '../fields';
 
 const perform = async (z: ZObject, bundle: Bundle) => {
-  const action = bundle.inputData.completed === false ? 'uncomplete' : 'complete';
+  // Zapier may deliver booleans as the strings 'true'/'false', so check both.
+  const completed = bundle.inputData.completed;
+  const action = completed === false || completed === 'false' ? 'uncomplete' : 'complete';
 
   const response = await request(z, bundle, {
     method: 'POST',

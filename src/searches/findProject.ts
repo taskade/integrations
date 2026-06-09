@@ -9,7 +9,8 @@ const perform = async (z: ZObject, bundle: Bundle) => {
       ? `/folders/${bundle.inputData.space_id}/projects`
       : '/me/projects';
 
-  const response = await request(z, bundle, { method: 'GET', path });
+  // Best-effort: widen the page size; matching is client-side over the result set.
+  const response = await request(z, bundle, { method: 'GET', path, params: { limit: '100' } });
 
   const data: ApiResponse = parseOk(z, response.json);
   const query = String(bundle.inputData.query ?? '').toLowerCase();

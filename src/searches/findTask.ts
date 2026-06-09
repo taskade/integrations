@@ -4,9 +4,11 @@ import { ApiResponse, parseOk, request } from '../client';
 import { projectField, spaceField } from '../fields';
 
 const perform = async (z: ZObject, bundle: Bundle) => {
+  // Best-effort: widen the page size; matching is client-side over the result set.
   const response = await request(z, bundle, {
     method: 'GET',
     path: `/projects/${bundle.inputData.project_id}/tasks`,
+    params: { limit: '100' },
   });
 
   const data: ApiResponse = parseOk(z, response.json);

@@ -18,16 +18,12 @@ const perform = async (z: ZObject, bundle: Bundle) => {
       authorization: `Bearer ${bundle.authData.access_token}`,
     },
     body: bundle.inputData.body ? (bundle.inputData.body as string) : undefined,
+    // Don't auto-throw on 4xx/5xx: this escape hatch must surface the real
+    // status + error body so power users can inspect failed calls.
+    skipThrowForStatus: true,
   });
 
-  let data: unknown;
-  try {
-    data = response.json;
-  } catch {
-    data = undefined;
-  }
-
-  return { status: response.status, data: data ?? null };
+  return { status: response.status, data: response.json ?? null };
 };
 
 export default {

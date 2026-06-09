@@ -2,6 +2,7 @@ import App from '../index';
 
 // zapier-platform-schema ships with the platform and has no published types;
 // require() keeps it untyped without tripping noImplicitAny.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const schema = require('zapier-platform-schema');
 
 // Zapier validates the *serialized* app definition, where every function is
@@ -9,8 +10,12 @@ const schema = require('zapier-platform-schema');
 // `zapier validate`/`zapier push`). Convert functions before validating so this
 // test mirrors what the platform actually checks.
 const toSchema = (value: unknown): unknown => {
-  if (typeof value === 'function') return `$func$${value.length}$f$`;
-  if (Array.isArray(value)) return value.map(toSchema);
+  if (typeof value === 'function') {
+    return `$func$${value.length}$f$`;
+  }
+  if (Array.isArray(value)) {
+    return value.map(toSchema);
+  }
   if (value && typeof value === 'object') {
     return Object.fromEntries(
       Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, toSchema(v)]),

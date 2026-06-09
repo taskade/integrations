@@ -7,6 +7,7 @@ const perform = async (z: ZObject, bundle: Bundle) => {
   const response = await request(z, bundle, {
     method: 'GET',
     path: `/projects/${bundle.inputData.project_id}/tasks`,
+    params: { limit: '100' },
   });
 
   const data: ApiResponse = parseOk(z, response.json);
