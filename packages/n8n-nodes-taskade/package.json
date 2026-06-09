@@ -1,0 +1,51 @@
+{
+  "name": "n8n-nodes-taskade",
+  "version": "0.1.0",
+  "description": "n8n community node for Taskade — tasks, projects, and AI agents on the Taskade public API",
+  "keywords": [
+    "n8n-community-node-package",
+    "taskade",
+    "tasks",
+    "projects",
+    "ai-agents"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/taskade/integrations",
+  "author": {
+    "name": "Taskade",
+    "email": "support@taskade.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taskade/integrations.git",
+    "directory": "packages/n8n-nodes-taskade"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').copyFileSync('nodes/Taskade/taskade.svg','dist/nodes/Taskade/taskade.svg')\"",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/TaskadeApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Taskade/Taskade.node.js"
+    ]
+  },
+  "devDependencies": {
+    "n8n-workflow": "^1.82.0",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
