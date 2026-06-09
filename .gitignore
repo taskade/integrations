@@ -62,3 +62,6 @@ typings/
 .next
 
 lib
+
+# package build output
+dist/
