@@ -7,6 +7,10 @@ Building a Taskade integration for another platform (n8n, Activepieces, Make, Pi
 - v1 REST API: `https://www.taskade.com/api/v1` — [spec](https://www.taskade.com/api/documentation/v1/json)
 - v2 Action API: `https://www.taskade.com/api/v2` — [spec](https://www.taskade.com/api/documentation/v2/json)
 
+## Packages
+
+- [`packages/n8n-nodes-taskade`](packages/n8n-nodes-taskade) — official n8n community node for Taskade, built in this repo
+
 ## Zapier app capabilities
 
 | Type | Key | What it does |
@@ -59,7 +63,13 @@ zapier logs --type=http --detailed
 
 ## Roadmap
 
-- Platform-agnostic operation manifest + per-platform codegen (n8n node, Activepieces piece rendered from one source)
+- Platform-agnostic operation manifest + per-platform codegen — the existing [n8n node](packages/n8n-nodes-taskade) and future targets (Activepieces, Make, Pipedream) rendered from one source
 - Portable event triggers once the public webhook-subscription API ships
 
 See the [Zapier Integration Guide](https://help.taskade.com/en/articles/8958540-zapier-integration) for end-user docs.
+
+## Related repos
+
+- [Taskade Docs](https://github.com/taskade/docs) — source for [docs.taskade.com](https://docs.taskade.com)
+- [Taskade MCP](https://github.com/taskade/mcp) — official MCP server ([`@taskade/mcp-server`](https://www.npmjs.com/package/@taskade/mcp-server) on npm)
+- [Taskade](https://github.com/taskade/taskade) — platform home, including the Genesis AI app builder
