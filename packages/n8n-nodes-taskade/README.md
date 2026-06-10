@@ -18,7 +18,7 @@ Personal Access Token — create one at taskade.com → Settings → API (tokens
 
 ## Installation
 
-Self-hosted n8n: **Settings → Community Nodes → Install** → `n8n-nodes-taskade`.
+Self-hosted n8n: **Settings → Community Nodes → Install** → `n8n-nodes-taskade` (npm publish pending — follow this repo for the release).
 
 ## Development
 
