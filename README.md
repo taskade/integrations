@@ -32,7 +32,7 @@ Hidden dropdown helpers (not user-facing): `get_all_spaces`, `get_all_projects`,
 
 Auth: OAuth2 (`www.taskade.com/oauth2/*`). The API also supports [Personal Access Tokens](https://www.taskade.com/settings/api) (`Authorization: Bearer tskdp_…`) for other platforms.
 
-> Note: the `task_due` trigger currently uses Taskade-internal webhook routes. A public webhook-subscription API (`POST /api/v2/subscribeWebhook`) is in progress — once live, event triggers become portable to any platform.
+> Note: the `task_due` trigger subscribes via the public **Action API v2** (`POST /api/v2/subscribeWebhook` / `unsubscribeWebhook`, available on **Pro and above**), so event triggers are portable to any platform. Its test-sample fetch still uses an internal route pending a public sample endpoint.
 
 ## Development
 

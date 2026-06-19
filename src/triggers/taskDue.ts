@@ -21,6 +21,9 @@ const perform = async (z: ZObject, bundle: Bundle) => {
   return [payload];
 };
 
+// performList still uses the internal route — the public Action API v2 does not
+// yet expose a "list recent due tasks" sample endpoint. Subscribe/unsubscribe are
+// fully on the public API; this remains until a public sample endpoint ships.
 const performList = async (z: ZObject, bundle: Bundle) => {
   const options: HttpRequestOptions = {
     url: 'https://www.taskade.com/webhooks/zapier/taskdue/performlist',
@@ -45,53 +48,51 @@ const performList = async (z: ZObject, bundle: Bundle) => {
     });
 };
 
+// Subscribe via the public Action API v2 (POST /api/v2/subscribeWebhook).
+// Account-level only: the public endpoint takes { targetUrl, triggerType } and
+// ignores scope, so the space/project inputs do not narrow the subscription yet
+// (they remain for forward-compatibility once scoped subscriptions ship).
+// Requires a paid plan (Pro+); free/Starter accounts receive 402.
 const performSubscribe = async (z: ZObject, bundle: Bundle) => {
   const options: HttpRequestOptions = {
-    url: 'https://www.taskade.com/webhooks/zapier/subscribe',
+    url: 'https://www.taskade.com/api/v2/subscribeWebhook',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: `Bearer ${bundle.authData.access_token}`,
     },
-    params: {},
     body: {
-      hookUrl: bundle.targetUrl,
-      triggerType: 'TaskDue',
-      spaceId: bundle.inputData.space_id != null ? bundle.inputData.space_id : null,
-      projectId: bundle.inputData.project_id != null ? bundle.inputData.project_id : null,
+      targetUrl: bundle.targetUrl,
+      triggerType: 'task.due',
     },
   };
 
   return z
-    .request('https://www.taskade.com/webhooks/zapier/subscribe', options)
+    .request('https://www.taskade.com/api/v2/subscribeWebhook', options)
     .then((response) => {
       response.throwForStatus();
-      const results = response.json;
-
-      // You can do any parsing you need for results here before returning them
-
-      return results;
+      // { ok: true, hookId } — hookId is read back in performUnsubscribe via bundle.subscribeData.
+      return response.json;
     });
 };
 
 const performUnsubscribe = async (z: ZObject, bundle: Bundle) => {
   const options: HttpRequestOptions = {
-    url: 'https://www.taskade.com/webhooks/zapier/unsubscribe',
-    method: 'DELETE',
+    url: 'https://www.taskade.com/api/v2/unsubscribeWebhook',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
       Authorization: `Bearer ${bundle.authData.access_token}`,
     },
-    params: {
-      // @ts-ignore
+    body: {
+      // @ts-ignore - subscribeData carries the hookId returned by performSubscribe
       hookId: bundle.subscribeData.hookId,
     },
   };
 
-  return z.request('https://www.taskade.com/webhooks/zapier/unsubscribe', options);
-  // return z.request(options).then((response) => z.JSON.parse(response.content));
+  return z.request('https://www.taskade.com/api/v2/unsubscribeWebhook', options);
 };
 
 export default {
