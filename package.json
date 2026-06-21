@@ -1,20 +1,20 @@
 {
   "name": "taskade",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Taskade is a collaboration platform for remote teams to organize and manage projects.",
   "main": "index.js",
   "scripts": {
     "test": "npm run build && jest --testTimeout 10000 --rootDir ./lib/test",
     "build": "npm run clean && tsc",
     "clean": "rimraf ./lib ./build",
-    "watch": "npm run clean && tsc --watch"
+    "watch": "npm run clean && tsc --watch",
+    "lint": "eslint src --ext .ts"
   },
   "engines": {
     "node": ">=v18",
     "npm": ">=5.6.0"
   },
   "dependencies": {
-    "@taskade/eslint-plugin": "0.4.0",
     "cross-fetch": "^3.1.5",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.37",
@@ -24,6 +24,9 @@
     "@types/jest": "^26.0.23",
     "@types/node": "^18.12.0",
     "@types/node-fetch": "^2.6.12",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
     "jest": "^26.6.3",
     "rimraf": "^3.0.2",
     "typescript": "5.3.3",
