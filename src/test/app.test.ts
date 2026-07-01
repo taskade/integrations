@@ -38,10 +38,35 @@ describe('Taskade app definition', () => {
         'update_task',
         'delete_task',
         'move_task',
+        'set_task_date',
+        'assign_task',
+        'set_task_note',
+        'set_custom_field',
         'create_project',
         'create_project_from_template',
+        'complete_project',
+        'copy_project',
+        'enable_share_link',
         'run_agent',
+        'create_agent',
+        'generate_agent',
+        'update_agent',
+        'add_agent_knowledge',
+        'publish_agent',
+        'trigger_automation',
         'custom_api_call',
+      ]),
+    );
+  });
+
+  it('registers the public-webhook instant triggers', () => {
+    expect(Object.keys(App.triggers)).toEqual(
+      expect.arrayContaining([
+        'new_comment',
+        'task_assigned',
+        'new_project',
+        'project_assigned',
+        'project_joined',
       ]),
     );
   });

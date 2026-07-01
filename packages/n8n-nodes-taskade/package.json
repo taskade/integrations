@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-taskade",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "n8n community node for Taskade — tasks, projects, and AI agents on the Taskade public API",
   "keywords": [
     "n8n-community-node-package",
@@ -38,7 +38,8 @@
       "dist/credentials/TaskadeApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Taskade/Taskade.node.js"
+      "dist/nodes/Taskade/Taskade.node.js",
+      "dist/nodes/Taskade/TaskadeTrigger.node.js"
     ]
   },
   "devDependencies": {
