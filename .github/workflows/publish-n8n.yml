@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
-      - run: npm install
+      - run: npm install --ignore-scripts # types-only build; skip native compiles (isolated-vm)
       - run: npm run build
       - run: npm publish --provenance --access public
         env:
