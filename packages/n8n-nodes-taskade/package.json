@@ -43,7 +43,7 @@
     ]
   },
   "devDependencies": {
-    "n8n-workflow": "^1.82.0",
+    "n8n-workflow": "^2.39.0",
     "typescript": "^5.5.0"
   },
   "peerDependencies": {
