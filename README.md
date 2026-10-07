@@ -1,8 +1,8 @@
 # Taskade Integrations
 
-The public source-of-truth for Taskade actions & triggers across automation platforms — starting with the official [Zapier integration](https://zapier.com/apps/taskade/integrations), built entirely on the [Taskade public API](https://docs.taskade.com/).
+The public source-of-truth for Taskade actions & triggers across automation platforms, starting with the official [Zapier integration](https://zapier.com/apps/taskade/integrations). It is built on the [Taskade public API](https://docs.taskade.com/), with one exception: the `task_due` trigger (see the note below).
 
-Building a Taskade integration for another platform (n8n, Activepieces, Make, Pipedream, or your own)? Everything here runs against the documented public API — copy freely. Live OpenAPI specs:
+Building a Taskade integration for another platform (n8n, Activepieces, Make, Pipedream, or your own)? Everything here except `task_due` runs against the documented public API, so copy freely. Live OpenAPI specs:
 
 - v1 REST API: `https://www.taskade.com/api/v1` — [spec](https://www.taskade.com/api/documentation/v1/json)
 - v2 Action API: `https://www.taskade.com/api/v2` — [spec](https://www.taskade.com/api/documentation/v2/json)
