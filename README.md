@@ -7,32 +7,31 @@ Building a Taskade integration for another platform (n8n, Activepieces, Make, Pi
 - v1 REST API: `https://www.taskade.com/api/v1` — [spec](https://www.taskade.com/api/documentation/v1/json)
 - v2 Action API: `https://www.taskade.com/api/v2` — [spec](https://www.taskade.com/api/documentation/v2/json)
 
-## Packages
+## Status
 
-- [`packages/n8n-nodes-taskade`](packages/n8n-nodes-taskade) — official n8n community node for Taskade, built in this repo
+| Platform | Status |
+|---|---|
+| Zapier | Live: [Taskade on Zapier](https://zapier.com/apps/taskade/integrations). Deploys are manual, so the live app version can lag this source. |
+| n8n | Source in [`packages/n8n-nodes-taskade`](packages/n8n-nodes-taskade) (package `n8n-nodes-taskade` 0.2.0). Not yet published to npm. |
+| Activepieces, Make, Pipedream | Planned. No code in this repo yet. |
 
 ## Zapier app capabilities
 
-| Type | Key | What it does |
+| Type | Keys | Notes |
 |---|---|---|
-| Trigger | `task_due` | Fires when a task is due (instant/webhook) |
-| Action | `create_task` | Create a task — with due date, assignee; content > 2000 chars auto-chunks into sibling tasks |
-| Action | `complete_task` | Mark a task complete, or reopen it |
-| Action | `update_task` | Update a task's content |
-| Action | `delete_task` | Delete a task |
-| Action | `move_task` | Reorder/reparent a task within a project |
-| Action | `create_project` | Create a project from Markdown |
-| Action | `create_project_from_template` | Create a project from a template |
-| Action | `run_agent` | Prompt a Taskade AI agent, get its response (v2 `promptAgent`) |
-| Action | `custom_api_call` | Authenticated request to any Taskade API endpoint |
-| Search | `find_task` | Find a task in a project by text |
-| Search | `find_project` | Find a project by name |
+| Trigger (instant) | `task_due` | Fires when a task is due. Uses Taskade-internal webhook routes. |
+| Trigger (instant) | `new_comment`, `task_assigned`, `new_project`, `project_assigned`, `project_joined` | Use the public webhook-subscription API (`POST /api/v2/subscribeWebhook`) |
+| Action (tasks) | `create_task`, `complete_task`, `update_task`, `delete_task`, `move_task`, `set_task_date`, `assign_task`, `set_task_note`, `set_custom_field` | `create_task` splits content over 2000 characters into sibling tasks |
+| Action (projects) | `create_project`, `create_project_from_template`, `complete_project`, `copy_project`, `enable_share_link` | |
+| Action (AI agents) | `run_agent`, `create_agent`, `generate_agent`, `update_agent`, `add_agent_knowledge`, `publish_agent` | `run_agent` prompts an agent and returns its response |
+| Action (other) | `trigger_automation`, `custom_api_call` | `custom_api_call` sends an authenticated request to any Taskade API endpoint |
+| Search | `find_task`, `find_project` | |
 
-Hidden dropdown helpers (not user-facing): `get_all_spaces`, `get_all_projects`, `get_all_blocks`, `get_all_assignable_members`, `get_all_tasks`, `get_all_project_templates`.
+Hidden dropdown helpers (not user-facing): `get_all_spaces`, `get_all_projects`, `get_all_blocks`, `get_all_assignable_members`, `get_all_tasks`, `get_all_project_templates`, `get_all_agents`, `get_all_fields`.
 
 Auth: OAuth2 (`www.taskade.com/oauth2/*`). The API also supports [Personal Access Tokens](https://www.taskade.com/settings/api) (`Authorization: Bearer tskdp_…`) for other platforms.
 
-> Note: the `task_due` trigger currently uses Taskade-internal webhook routes. A public webhook-subscription API (`POST /api/v2/subscribeWebhook`) is in progress — once live, event triggers become portable to any platform.
+> Note: only `task_due` still uses Taskade-internal webhook routes. The other instant triggers use the public webhook-subscription API, so other platforms can subscribe to the same events.
 
 ## Development
 
@@ -40,6 +39,7 @@ Prerequisites: Node ≥ 18, Yarn, [Zapier CLI](https://docs.zapier.com/platform/
 
 ```bash
 yarn install
+yarn lint         # eslint on src/
 yarn build        # tsc -> lib/
 yarn test         # builds, then validates the app against Zapier's official schema
 ```
@@ -64,7 +64,7 @@ zapier logs --type=http --detailed
 ## Roadmap
 
 - Platform-agnostic operation manifest + per-platform codegen — the existing [n8n node](packages/n8n-nodes-taskade) and future targets (Activepieces, Make, Pipedream) rendered from one source
-- Portable event triggers once the public webhook-subscription API ships
+- Move `task_due` to the public webhook-subscription API
 
 See the [Zapier Integration Guide](https://help.taskade.com/en/articles/8958540-zapier-integration) for end-user docs.
 
