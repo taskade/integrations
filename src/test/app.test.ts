@@ -30,6 +30,16 @@ describe('Taskade app definition', () => {
     expect(results.errors).toEqual([]);
   });
 
+  it('authenticates the client on the token refresh request', () => {
+    expect(App.authentication.oauth2Config.refreshAccessToken.body).toEqual(
+      expect.objectContaining({
+        grant_type: 'refresh_token',
+        client_id: '{{process.env.CLIENT_ID}}',
+        client_secret: '{{process.env.CLIENT_SECRET}}',
+      }),
+    );
+  });
+
   it('registers the expected creates', () => {
     expect(Object.keys(App.creates)).toEqual(
       expect.arrayContaining([
