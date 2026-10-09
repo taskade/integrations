@@ -1,0 +1,15 @@
+{
+	"url": "/v2/promptAgent",
+	"method": "POST",
+	"body": {
+		"spaceId": "{{ifempty(parameters.folderId, parameters.spaceId)}}",
+		"agentId": "{{parameters.agentId}}",
+		"prompt": "{{parameters.prompt}}"
+	},
+	"response": {
+		"output": {
+			"agentId": "{{parameters.agentId}}",
+			"response": "{{body.summary}}"
+		}
+	}
+}

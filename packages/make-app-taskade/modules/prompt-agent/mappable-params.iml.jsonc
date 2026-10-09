@@ -1,0 +1,50 @@
+[
+	{
+		"name": "spaceId",
+		"type": "select",
+		"label": "Workspace",
+		"required": true,
+		"options": {
+			"store": "rpc://list-workspaces",
+			"nested": [
+				{
+					"name": "folderId",
+					"type": "select",
+					"label": "Folder",
+					"help": "Optional. Leave empty to use the workspace itself.",
+					"options": {
+						"store": "rpc://list-folders",
+						"nested": [
+							{
+								"name": "agentId",
+								"type": "select",
+								"label": "AI agent",
+								"required": true,
+								"options": "rpc://list-agents"
+							}
+						],
+						"placeholder": {
+							"label": "Use the workspace",
+							"nested": [
+								{
+									"name": "agentId",
+									"type": "select",
+									"label": "AI agent",
+									"required": true,
+									"options": "rpc://list-agents"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	},
+	{
+		"name": "prompt",
+		"type": "text",
+		"label": "Prompt",
+		"required": true,
+		"multiline": true
+	}
+]

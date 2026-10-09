@@ -1,0 +1,54 @@
+[
+	{
+		"name": "projectId",
+		"type": "select",
+		"label": "Project",
+		"required": true,
+		"help": "Select one of the projects you viewed recently, or map a project ID.",
+		"options": {
+			"store": "rpc://list-projects",
+			"nested": [
+				{
+					"name": "taskId",
+					"type": "select",
+					"label": "Task",
+					"required": true,
+					"options": "rpc://list-tasks"
+				},
+				{
+					"name": "targetTaskId",
+					"type": "select",
+					"label": "Target task",
+					"required": true,
+					"options": "rpc://list-tasks"
+				}
+			]
+		}
+	},
+	{
+		"name": "position",
+		"type": "select",
+		"label": "Position",
+		"required": true,
+		"default": "afterend",
+		"options": [
+			{
+				"label": "Last child",
+				"value": "beforeend"
+			},
+			{
+				"label": "First child",
+				"value": "afterbegin"
+			},
+			{
+				"label": "Before (sibling above)",
+				"value": "beforebegin"
+			},
+			{
+				"label": "After (sibling below)",
+				"value": "afterend"
+			}
+		],
+		"help": "Where to put the task, relative to the target task."
+	}
+]

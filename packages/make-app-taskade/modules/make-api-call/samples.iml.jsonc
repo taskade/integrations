@@ -1,0 +1,15 @@
+{
+	"body": {
+		"ok": true,
+		"items": [
+			{
+				"id": "8pVZCzz6ubkbhxkS",
+				"name": "Acme"
+			}
+		]
+	},
+	"headers": {
+		"content-type": "application/json"
+	},
+	"statusCode": 200
+}

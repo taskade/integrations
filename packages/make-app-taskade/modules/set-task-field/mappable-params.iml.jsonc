@@ -1,0 +1,62 @@
+[
+	{
+		"name": "projectId",
+		"type": "select",
+		"label": "Project",
+		"required": true,
+		"help": "Select one of the projects you viewed recently, or map a project ID.",
+		"options": {
+			"store": "rpc://list-projects",
+			"nested": [
+				{
+					"name": "taskId",
+					"type": "select",
+					"label": "Task",
+					"required": true,
+					"options": "rpc://list-tasks"
+				},
+				{
+					"name": "fieldId",
+					"type": "select",
+					"label": "Custom field",
+					"required": true,
+					"options": "rpc://list-fields"
+				}
+			]
+		}
+	},
+	{
+		"name": "valueType",
+		"type": "select",
+		"label": "Value type",
+		"required": true,
+		"default": "text",
+		"options": [
+			{
+				"label": "Text",
+				"value": "text",
+				"nested": [
+					{
+						"name": "value",
+						"type": "text",
+						"label": "Value",
+						"required": true,
+						"help": "For a select field, enter the option ID, not its label."
+					}
+				]
+			},
+			{
+				"label": "Number",
+				"value": "number",
+				"nested": [
+					{
+						"name": "value",
+						"type": "number",
+						"label": "Value",
+						"required": true
+					}
+				]
+			}
+		]
+	}
+]

@@ -1,0 +1,16 @@
+{
+	"url": "/v2/setTaskFieldValue",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}",
+		"fieldId": "{{parameters.fieldId}}",
+		"value": "{{parameters.value}}"
+	},
+	"response": {
+		"output": {
+			"taskId": "{{parameters.taskId}}",
+			"fieldId": "{{parameters.fieldId}}"
+		}
+	}
+}

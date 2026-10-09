@@ -1,0 +1,17 @@
+[
+	{
+		"name": "taskId",
+		"type": "text",
+		"label": "Task ID"
+	},
+	{
+		"name": "type",
+		"type": "text",
+		"label": "Format"
+	},
+	{
+		"name": "value",
+		"type": "text",
+		"label": "Note"
+	}
+]

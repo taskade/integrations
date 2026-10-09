@@ -1,0 +1,13 @@
+{
+	"url": "/v2/deleteTask",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}"
+	},
+	"response": {
+		"output": {
+			"taskId": "{{parameters.taskId}}"
+		}
+	}
+}

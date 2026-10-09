@@ -1,0 +1,25 @@
+{
+	"url": "https://www.taskade.com/api/v2/webhooks",
+	"method": "POST",
+	"headers": {
+		"Authorization": "Bearer {{connection.accessToken}}"
+	},
+	"body": {
+		"targetUrl": "{{webhook.url}}",
+		"events": [
+			"project.assigned"
+		],
+		"spaceIds": "{{merge(ifempty(parameters.spaceIds, emptyarray), ifempty(parameters.folderIds, emptyarray))}}"
+	},
+	"response": {
+		"data": {
+			"externalHookId": "{{body.webhook.id}}"
+		}
+	},
+	"log": {
+		"sanitize": [
+			"request.headers.authorization",
+			"response.body.secret"
+		]
+	}
+}
