@@ -1,15 +1,28 @@
 name: Publish n8n node
 
-# n8n verified community nodes must be published from GitHub Actions with npm
-# provenance (mandatory since 2026-05-01). Requires the NPM_TOKEN repo secret.
+# Publishes packages/n8n-nodes-taskade to npm with a provenance statement.
+# n8n verifies a community node only if every version was published from a
+# GitHub Actions workflow with provenance (required since 2026-05-01):
+# https://docs.n8n.io/integrations/creating-nodes/build/reference/verification-guidelines/
+#
+# Release: bump "version" in packages/n8n-nodes-taskade/package.json, merge,
+# then push the tag n8n-v<version> (for example n8n-v1.0.0) from master.
+#
+# npm auth, one of:
+#   A. Trusted publishing (preferred, no secret): on npmjs.com, package
+#      n8n-nodes-taskade > Settings > Trusted Publisher > GitHub Actions,
+#      owner "taskade", repository "integrations", workflow "publish-n8n.yml".
+#      npm allows this only after the package exists, so the first release uses B.
+#   B. Token: a granular npm token with read and write access to
+#      n8n-nodes-taskade, saved as the repository secret NPM_TOKEN.
+#      Delete the secret after A works.
 on:
-  workflow_dispatch:
   push:
-    tags: ['n8n-v*']
+    tags: ['n8n-v*.*.*']
 
 permissions:
   contents: read
-  id-token: write # npm provenance (OIDC)
+  id-token: write # npm provenance and trusted publishing (OIDC)
 
 jobs:
   publish:
@@ -19,12 +32,47 @@ jobs:
         working-directory: packages/n8n-nodes-taskade
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check that the tagged commit is on master
+        run: |
+          git fetch origin master
+          git merge-base --is-ancestor "${GITHUB_SHA}" origin/master
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org
-      - run: npm install --ignore-scripts # types-only build; skip native compiles (isolated-vm)
+          # Node 24 ships npm 11, which trusted publishing needs (npm >= 11.5.1).
+          node-version: 24
+          cache: npm
+          cache-dependency-path: packages/n8n-nodes-taskade/package-lock.json
+      - name: Check that the tag matches the package version
+        run: |
+          version=$(node -p "require('./package.json').version")
+          if [ "${GITHUB_REF_NAME}" != "n8n-v${version}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package version ${version}"
+            exit 1
+          fi
+      - run: npm ci --ignore-scripts
+      - run: npm test
       - run: npm run build
-      - run: npm publish --provenance --access public
+      - name: Run the n8n community package scanner on the source and the tarball
+        run: |
+          npm install --no-save --prefix "${RUNNER_TEMP}/n8n-scanner" @n8n/scan-community-package@0.38.0
+          npm run scan -- "${RUNNER_TEMP}/n8n-scanner"
+      - name: Publish with provenance
+        # In CI, `n8n-node release` runs lint and build, then `npm publish` with provenance.
+        run: |
+          if [ -n "${NPM_TOKEN}" ]; then npm config set //registry.npmjs.org/:_authToken "${NPM_TOKEN}"; fi
+          npm run release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Scan the published version (the check n8n runs)
+        # A failure here means n8n will reject this version. Fix it and publish a new version.
+        run: |
+          version=$(node -p "require('./package.json').version")
+          for attempt in 1 2 3 4 5 6; do
+            output=$(npx --yes @n8n/scan-community-package@0.38.0 "n8n-nodes-taskade@${version}" 2>&1) || true
+            echo "${output}"
+            if echo "${output}" | grep -q "has passed all security checks"; then exit 0; fi
+            sleep 30
+          done
+          exit 1

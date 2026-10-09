@@ -1,0 +1,61 @@
+{
+  "name": "Taskade: weekly digest of open tasks",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "weeks", "triggerAtDay": [1], "triggerAtHour": 9 }] }
+      },
+      "name": "Every Monday",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "resource": "task",
+        "operation": "getMany",
+        "projectId": { "__rl": true, "mode": "id", "value": "YOUR_PROJECT_ID" },
+        "returnAll": true
+      },
+      "name": "Get tasks",
+      "type": "n8n-nodes-taskade.taskade",
+      "typeVersion": 1,
+      "position": [240, 0],
+      "credentials": { "taskadeApi": { "id": "", "name": "Taskade API" } }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "strict" },
+          "conditions": [
+            { "leftValue": "={{ $json.completed }}", "rightValue": false, "operator": { "type": "boolean", "operation": "false", "singleValue": true } }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Open tasks only",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [480, 0]
+    },
+    {
+      "parameters": {
+        "resource": "project",
+        "operation": "create",
+        "spaceId": { "__rl": true, "mode": "id", "value": "YOUR_WORKSPACE_ID" },
+        "content": "=# Open tasks, week of {{ $now.toFormat('yyyy-MM-dd') }}\n{{ $input.all().map(item => '- ' + item.json.text).join('\\n') }}"
+      },
+      "name": "Write the digest",
+      "type": "n8n-nodes-taskade.taskade",
+      "typeVersion": 1,
+      "position": [720, 0],
+      "executeOnce": true,
+      "credentials": { "taskadeApi": { "id": "", "name": "Taskade API" } }
+    }
+  ],
+  "connections": {
+    "Every Monday": { "main": [[{ "node": "Get tasks", "type": "main", "index": 0 }]] },
+    "Get tasks": { "main": [[{ "node": "Open tasks only", "type": "main", "index": 0 }]] },
+    "Open tasks only": { "main": [[{ "node": "Write the digest", "type": "main", "index": 0 }]] }
+  }
+}
