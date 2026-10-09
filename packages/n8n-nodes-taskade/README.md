@@ -72,7 +72,7 @@ How it works:
 
 - When you activate the workflow, the node registers a signed webhook with `POST /webhooks`. When you deactivate it, the node deletes the webhook.
 - Taskade signs each delivery with `X-Taskade-Signature: sha256=<HMAC-SHA256 of the body>`. The node rejects a delivery with a wrong signature (HTTP 401).
-- **Workspace Names or IDs** limits the events to some workspaces. Leave it empty to get events from all of your workspaces.
+- **Workspace or Folder Names or IDs** limits the events to some workspaces or folders. A workspace does not include its folders, so select each folder too. Leave it empty to get events from everything you can access.
 
 Requirements:
 

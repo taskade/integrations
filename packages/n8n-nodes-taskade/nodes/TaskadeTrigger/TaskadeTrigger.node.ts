@@ -105,25 +105,35 @@ export class TaskadeTrigger implements INodeType {
         description: 'The Taskade event that starts the workflow',
       },
       {
-        displayName: 'Workspace Names or IDs',
+        displayName: 'Workspace or Folder Names or IDs',
         name: 'spaceIds',
         type: 'multiOptions',
-        typeOptions: { loadOptionsMethod: 'getWorkspaces' },
+        typeOptions: { loadOptionsMethod: 'getSpaces' },
         default: [],
         description:
-          'Only fire for events in these workspaces. Leave empty to fire for all workspaces. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+          'Only fire for events in these workspaces or folders. A workspace does not include its folders, so select each folder too. Leave empty to fire for everything. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
       },
     ],
   };
 
   methods = {
     loadOptions: {
-      async getWorkspaces(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+      async getSpaces(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
         const spaces = (await taskadeApiRequest.call(this, '/listSpaces')).items as IDataObject[];
-        return (spaces ?? []).map((space) => ({
-          name: String(space.name ?? space.id),
-          value: String(space.id),
-        }));
+        const options: INodePropertyOptions[] = [];
+        for (const space of spaces ?? []) {
+          const spaceName = String(space.name ?? space.id);
+          options.push({ name: spaceName, value: String(space.id) });
+          const folders = (await taskadeApiRequest.call(this, '/listFolders', { spaceId: space.id }))
+            .items as IDataObject[];
+          for (const folder of folders ?? []) {
+            options.push({
+              name: `${spaceName} / ${String(folder.name ?? folder.id)}`,
+              value: String(folder.id),
+            });
+          }
+        }
+        return options;
       },
     },
   };

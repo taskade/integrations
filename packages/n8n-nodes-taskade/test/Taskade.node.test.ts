@@ -283,5 +283,7 @@ describe('toTaskadeDate', () => {
   });
   it('rejects a value that is not a date', () => {
     expect(toTaskadeDate('next week', false, 'UTC')).toBeUndefined();
+    expect(toTaskadeDate('2026-13-40T25:61:61', false, 'UTC')).toBeUndefined();
+    expect(toTaskadeDate('2026-02-30', true, 'UTC')).toBeUndefined();
   });
 });

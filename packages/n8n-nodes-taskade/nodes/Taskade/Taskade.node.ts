@@ -65,10 +65,18 @@ export function toTaskadeDate(
     date = `${parts.year}-${parts.month}-${parts.day}`;
     time = `${parts.hour}:${parts.minute}:${parts.second}`;
   }
+  if (time !== undefined && time.length === 5) {
+    time = `${time}:00`;
+  }
+  // Reject values like 2026-02-30 or 25:61: a real date and time round-trips unchanged.
+  const iso = `${date}T${time ?? '00:00:00'}`;
+  if (Number.isNaN(Date.parse(`${iso}Z`)) || new Date(`${iso}Z`).toISOString().slice(0, 19) !== iso) {
+    return undefined;
+  }
   if (allDay || time === undefined) {
     return { date };
   }
-  return { date, time: time.length === 5 ? `${time}:00` : time, timezone };
+  return { date, time, timezone };
 }
 
 function matchesFilter(name: string, filter?: string): boolean {

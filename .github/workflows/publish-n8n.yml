@@ -66,7 +66,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Scan the published version (the check n8n runs)
-        continue-on-error: true
+        # A failure here means n8n will reject this version. Fix it and publish a new version.
         run: |
           version=$(node -p "require('./package.json').version")
           for attempt in 1 2 3 4 5 6; do
