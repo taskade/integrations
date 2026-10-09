@@ -313,7 +313,11 @@ if (spec === undefined && process.env.CI) {
   }
   for (const [where, request] of requests) {
     const match = /^(?:https:\/\/www\.taskade\.com\/api)?\/v2(\/[^?]*)$/.exec(request.url);
-    if (!match) continue;
+    if (!match) {
+      // Only the universal module takes a path from the user.
+      if (!where.startsWith('module.make-api-call.')) fail(`${where}: ${request.url} is not a Public API v2 path`);
+      continue;
+    }
     const specPathKey = match[1].replace(/\{\{.*\}\}/, '{id}');
     const operation = spec.paths?.[specPathKey]?.[(request.method ?? 'GET').toLowerCase()];
     if (!operation) {
@@ -321,7 +325,11 @@ if (spec === undefined && process.env.CI) {
       continue;
     }
     const schema = operation.requestBody?.content?.['application/json']?.schema;
-    if (schema && request.body !== undefined) checkBody(spec, schema, request.body, where);
+    if (operation.requestBody?.required && request.body === undefined) {
+      fail(`${where}: the spec requires a request body`);
+    } else if (schema && request.body !== undefined) {
+      checkBody(spec, schema, request.body, where);
+    }
   }
   console.log(`Checked ${requests.length} requests against the Public API v2 spec.`);
 }
