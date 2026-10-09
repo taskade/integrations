@@ -1,0 +1,22 @@
+{
+  "node": "n8n-nodes-taskade.taskadeTrigger",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": ["Productivity"],
+  "subcategories": {
+    "Productivity": ["Project Management"]
+  },
+  "alias": ["task", "project", "comment", "webhook", "due date"],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://github.com/taskade/integrations/tree/master/packages/n8n-nodes-taskade#credentials"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://github.com/taskade/integrations/tree/master/packages/n8n-nodes-taskade#trigger"
+      }
+    ]
+  }
+}

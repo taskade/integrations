@@ -1,5 +1,6 @@
 import type {
   IAuthenticateGeneric,
+  Icon,
   ICredentialTestRequest,
   ICredentialType,
   INodeProperties,
@@ -10,7 +11,10 @@ export class TaskadeApi implements ICredentialType {
 
   displayName = 'Taskade API';
 
-  documentationUrl = 'https://docs.taskade.com';
+  icon: Icon = { light: 'file:../icons/taskade.svg', dark: 'file:../icons/taskade.dark.svg' };
+
+  documentationUrl =
+    'https://github.com/taskade/integrations/tree/master/packages/n8n-nodes-taskade#credentials';
 
   properties: INodeProperties[] = [
     {
@@ -19,8 +23,9 @@ export class TaskadeApi implements ICredentialType {
       type: 'string',
       typeOptions: { password: true },
       default: '',
+      required: true,
       description:
-        'Create a token at taskade.com → Settings → API (tokens start with tskdp_)',
+        'Create a token in Taskade under Settings > API. Tokens start with tskdp_.',
     },
   ];
 
@@ -35,8 +40,10 @@ export class TaskadeApi implements ICredentialType {
 
   test: ICredentialTestRequest = {
     request: {
-      baseURL: 'https://www.taskade.com/api/v1',
-      url: '/workspaces',
+      baseURL: 'https://www.taskade.com/api/v2',
+      url: '/listSpaces',
+      method: 'POST',
+      body: {},
     },
   };
 }
