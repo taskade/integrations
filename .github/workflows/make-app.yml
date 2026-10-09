@@ -1,0 +1,22 @@
+name: Make app
+
+on:
+  push:
+    branches: [master]
+    paths: ['packages/make-app-taskade/**', '.github/workflows/make-app.yml']
+  pull_request:
+    paths: ['packages/make-app-taskade/**', '.github/workflows/make-app.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Static checks, plus a comparison of every request with the live Public API v2 spec.
+      - run: node packages/make-app-taskade/test/validate.mjs

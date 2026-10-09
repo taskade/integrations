@@ -1,0 +1,25 @@
+{
+	"url": "/v2/listProjectMembers",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"limit": 100,
+		"page": 1
+	},
+	"response": {
+		"limit": 500,
+		"iterate": "{{body.items}}",
+		"output": {
+			"label": "{{ifempty(item.displayName, item.handle)}} (@{{item.handle}})",
+			"value": "{{item.handle}}"
+		}
+	},
+	"pagination": {
+		"body": {
+			"projectId": "{{parameters.projectId}}",
+			"limit": 100,
+			"page": "{{pagination.page}}"
+		},
+		"condition": "{{length(body.items) >= 100}}"
+	}
+}

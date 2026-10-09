@@ -1,0 +1,86 @@
+[
+	{
+		"name": "url",
+		"type": "text",
+		"label": "URL",
+		"required": true,
+		"help": "Enter a path relative to `https://www.taskade.com/api`. For example: `/v2/listSpaces`. See the [API reference](https://www.taskade.com/api/documentation/v2)."
+	},
+	{
+		"name": "method",
+		"type": "select",
+		"label": "Method",
+		"required": true,
+		"default": "POST",
+		"options": [
+			{
+				"label": "GET",
+				"value": "GET"
+			},
+			{
+				"label": "POST",
+				"value": "POST"
+			},
+			{
+				"label": "PUT",
+				"value": "PUT"
+			},
+			{
+				"label": "PATCH",
+				"value": "PATCH"
+			},
+			{
+				"label": "DELETE",
+				"value": "DELETE"
+			}
+		],
+		"help": "Most Public API v2 operations use POST."
+	},
+	{
+		"name": "headers",
+		"type": "array",
+		"label": "Headers",
+		"default": [
+			{
+				"key": "Content-Type",
+				"value": "application/json"
+			}
+		],
+		"help": "You do not have to add the authorization header. The app adds it for you.",
+		"spec": [
+			{
+				"name": "key",
+				"type": "text",
+				"label": "Key"
+			},
+			{
+				"name": "value",
+				"type": "text",
+				"label": "Value"
+			}
+		]
+	},
+	{
+		"name": "qs",
+		"type": "array",
+		"label": "Query string",
+		"spec": [
+			{
+				"name": "key",
+				"type": "text",
+				"label": "Key"
+			},
+			{
+				"name": "value",
+				"type": "text",
+				"label": "Value"
+			}
+		]
+	},
+	{
+		"name": "body",
+		"type": "any",
+		"label": "Body",
+		"help": "Enter the body content for your API call. For example: `{}`."
+	}
+]

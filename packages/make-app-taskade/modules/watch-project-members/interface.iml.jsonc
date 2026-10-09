@@ -1,0 +1,27 @@
+[
+	{
+		"name": "spaceId",
+		"type": "text",
+		"label": "Workspace ID"
+	},
+	{
+		"name": "projectId",
+		"type": "text",
+		"label": "Project ID"
+	},
+	{
+		"name": "projectName",
+		"type": "text",
+		"label": "Project name"
+	},
+	{
+		"name": "joinerName",
+		"type": "text",
+		"label": "Member name"
+	},
+	{
+		"name": "joinerUserId",
+		"type": "number",
+		"label": "Member user ID"
+	}
+]

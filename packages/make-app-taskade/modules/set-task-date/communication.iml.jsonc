@@ -1,0 +1,16 @@
+{
+	"url": "/v2/setTaskDate",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}",
+		"start": {
+			"date": "{{if(parameters.allDay, formatDate(parameters.date, 'YYYY-MM-DD'), formatDate(parameters.date, 'YYYY-MM-DD', ifempty(parameters.timezone, 'UTC')))}}",
+			"time": "{{if(parameters.allDay, null, formatDate(parameters.date, 'HH:mm:ss', ifempty(parameters.timezone, 'UTC')))}}",
+			"timezone": "{{if(parameters.allDay, null, ifempty(parameters.timezone, 'UTC'))}}"
+		}
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

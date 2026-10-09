@@ -1,0 +1,17 @@
+[
+	{
+		"name": "clientId",
+		"type": "text",
+		"label": "Client ID",
+		"advanced": true,
+		"editable": true,
+		"help": "Optional. To use your own OAuth2 application, create it in Taskade under Settings > API > OAuth2 Applications with the redirect URL `https://www.make.com/oauth/cb/app`."
+	},
+	{
+		"name": "clientSecret",
+		"type": "password",
+		"label": "Client secret",
+		"advanced": true,
+		"editable": true
+	}
+]

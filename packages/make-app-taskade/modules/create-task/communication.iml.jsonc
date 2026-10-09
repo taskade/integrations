@@ -1,0 +1,18 @@
+{
+	"url": "/v2/createTask",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"tasks": [
+			{
+				"contentType": "{{parameters.contentType}}",
+				"content": "{{parameters.content}}",
+				"taskId": "{{ifempty(parameters.relativeTaskId, undefined)}}",
+				"placement": "{{ifempty(parameters.placement, 'beforeend')}}"
+			}
+		]
+	},
+	"response": {
+		"output": "{{first(body.items)}}"
+	}
+}

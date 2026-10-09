@@ -1,0 +1,72 @@
+[
+	{
+		"name": "projectId",
+		"type": "select",
+		"label": "Project",
+		"required": true,
+		"help": "Select one of the projects you viewed recently, or map a project ID.",
+		"options": {
+			"store": "rpc://list-projects",
+			"nested": [
+				{
+					"name": "relativeTaskId",
+					"type": "select",
+					"label": "Parent or sibling task",
+					"required": false,
+					"options": "rpc://list-tasks",
+					"help": "Optional. Place the new task relative to this task. Leave empty to add it to the top level of the project."
+				}
+			]
+		}
+	},
+	{
+		"name": "content",
+		"type": "text",
+		"label": "Text",
+		"required": true,
+		"multiline": true,
+		"help": "Up to 2000 characters."
+	},
+	{
+		"name": "contentType",
+		"type": "select",
+		"label": "Format",
+		"default": "text/markdown",
+		"required": true,
+		"options": [
+			{
+				"label": "Markdown",
+				"value": "text/markdown"
+			},
+			{
+				"label": "Plain text",
+				"value": "text/plain"
+			}
+		]
+	},
+	{
+		"name": "placement",
+		"type": "select",
+		"label": "Position",
+		"default": "beforeend",
+		"options": [
+			{
+				"label": "Last child",
+				"value": "beforeend"
+			},
+			{
+				"label": "First child",
+				"value": "afterbegin"
+			},
+			{
+				"label": "Before (sibling above)",
+				"value": "beforebegin"
+			},
+			{
+				"label": "After (sibling below)",
+				"value": "afterend"
+			}
+		],
+		"help": "Without a parent or sibling task, only **Last child** and **First child** apply. They add the task at the end or the start of the project."
+	}
+]

@@ -1,0 +1,19 @@
+{
+	"url": "https://www.taskade.com/api/{{parameters.url}}",
+	"method": "{{parameters.method}}",
+	"headers": {
+		"{{...}}": "{{toCollection(parameters.headers, 'key', 'value')}}"
+	},
+	"qs": {
+		"{{...}}": "{{toCollection(parameters.qs, 'key', 'value')}}"
+	},
+	"body": "{{parameters.body}}",
+	"type": "text",
+	"response": {
+		"output": {
+			"body": "{{body}}",
+			"headers": "{{headers}}",
+			"statusCode": "{{statusCode}}"
+		}
+	}
+}

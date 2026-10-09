@@ -1,0 +1,13 @@
+{
+	"url": "/v2/updateTask",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}",
+		"contentType": "{{parameters.contentType}}",
+		"content": "{{parameters.content}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

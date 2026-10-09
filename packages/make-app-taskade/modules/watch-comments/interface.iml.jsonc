@@ -1,0 +1,58 @@
+[
+	{
+		"name": "projectId",
+		"type": "text",
+		"label": "Project ID"
+	},
+	{
+		"name": "projectName",
+		"type": "text",
+		"label": "Project name"
+	},
+	{
+		"name": "nodeId",
+		"type": "text",
+		"label": "Task ID"
+	},
+	{
+		"name": "nodeText",
+		"type": "text",
+		"label": "Task text"
+	},
+	{
+		"name": "commenterDisplayName",
+		"type": "text",
+		"label": "Commenter name"
+	},
+	{
+		"name": "commenterHandle",
+		"type": "text",
+		"label": "Commenter handle"
+	},
+	{
+		"name": "commentBody",
+		"type": "text",
+		"label": "Comment"
+	},
+	{
+		"name": "commentBodyType",
+		"type": "text",
+		"label": "Comment format"
+	},
+	{
+		"name": "assignees",
+		"type": "array",
+		"label": "Task assignees",
+		"spec": {
+			"type": "text"
+		}
+	},
+	{
+		"name": "mentionedHandles",
+		"type": "array",
+		"label": "Mentioned handles",
+		"spec": {
+			"type": "text"
+		}
+	}
+]

@@ -1,0 +1,597 @@
+{
+	"fileVersion": 1,
+	"generalCodeFiles": {
+		"base": "general/base.iml.jsonc",
+		"common": "general/common.json",
+		"readme": "general/readme.md",
+		"groups": "modules/groups.json"
+	},
+	"components": {
+		"connection": {
+			"taskade": {
+				"label": "Taskade",
+				"connectionType": "oauth",
+				"codeFiles": {
+					"communication": "connections/taskade/oauth-communication.iml.jsonc",
+					"params": "connections/taskade/params.iml.jsonc",
+					"common": null,
+					"scopeList": "connections/taskade/scope-list.iml.jsonc",
+					"defaultScope": "connections/taskade/default-scope.iml.jsonc",
+					"installSpec": null,
+					"installDirectives": null
+				}
+			},
+			"taskade-token": {
+				"label": "Taskade (personal access token)",
+				"connectionType": "basic",
+				"codeFiles": {
+					"communication": "connections/taskade-token/communication.iml.jsonc",
+					"params": "connections/taskade-token/params.iml.jsonc",
+					"common": null
+				}
+			}
+		},
+		"webhook": {
+			"task-due": {
+				"label": "Tasks Due",
+				"webhookType": "web",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "webhooks/task-due/communication.iml.jsonc",
+					"params": "webhooks/task-due/params.iml.jsonc",
+					"attach": "webhooks/task-due/attach.iml.jsonc",
+					"detach": "webhooks/task-due/detach.iml.jsonc",
+					"update": null,
+					"requiredScope": null
+				}
+			},
+			"comment-created": {
+				"label": "New Comments",
+				"webhookType": "web",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "webhooks/comment-created/communication.iml.jsonc",
+					"params": "webhooks/comment-created/params.iml.jsonc",
+					"attach": "webhooks/comment-created/attach.iml.jsonc",
+					"detach": "webhooks/comment-created/detach.iml.jsonc",
+					"update": null,
+					"requiredScope": null
+				}
+			},
+			"task-assigned": {
+				"label": "Task Assignments",
+				"webhookType": "web",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "webhooks/task-assigned/communication.iml.jsonc",
+					"params": "webhooks/task-assigned/params.iml.jsonc",
+					"attach": "webhooks/task-assigned/attach.iml.jsonc",
+					"detach": "webhooks/task-assigned/detach.iml.jsonc",
+					"update": null,
+					"requiredScope": null
+				}
+			},
+			"project-created": {
+				"label": "New Projects",
+				"webhookType": "web",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "webhooks/project-created/communication.iml.jsonc",
+					"params": "webhooks/project-created/params.iml.jsonc",
+					"attach": "webhooks/project-created/attach.iml.jsonc",
+					"detach": "webhooks/project-created/detach.iml.jsonc",
+					"update": null,
+					"requiredScope": null
+				}
+			},
+			"project-assigned": {
+				"label": "Project Assignments",
+				"webhookType": "web",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "webhooks/project-assigned/communication.iml.jsonc",
+					"params": "webhooks/project-assigned/params.iml.jsonc",
+					"attach": "webhooks/project-assigned/attach.iml.jsonc",
+					"detach": "webhooks/project-assigned/detach.iml.jsonc",
+					"update": null,
+					"requiredScope": null
+				}
+			},
+			"project-joined": {
+				"label": "New Project Members",
+				"webhookType": "web",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "webhooks/project-joined/communication.iml.jsonc",
+					"params": "webhooks/project-joined/params.iml.jsonc",
+					"attach": "webhooks/project-joined/attach.iml.jsonc",
+					"detach": "webhooks/project-joined/detach.iml.jsonc",
+					"update": null,
+					"requiredScope": null
+				}
+			}
+		},
+		"module": {
+			"watch-tasks-due": {
+				"label": "Watch Tasks Due",
+				"description": "Triggers when a task reaches its due date.",
+				"moduleType": "instant_trigger",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"webhook": "task-due",
+				"codeFiles": {
+					"communication": "modules/watch-tasks-due/communication.iml.jsonc",
+					"staticParams": "modules/watch-tasks-due/static-params.iml.jsonc",
+					"mappableParams": "modules/watch-tasks-due/mappable-params.iml.jsonc",
+					"interface": "modules/watch-tasks-due/interface.iml.jsonc",
+					"samples": "modules/watch-tasks-due/samples.iml.jsonc"
+				}
+			},
+			"watch-comments": {
+				"label": "Watch New Comments",
+				"description": "Triggers when someone comments on a task.",
+				"moduleType": "instant_trigger",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"webhook": "comment-created",
+				"codeFiles": {
+					"communication": "modules/watch-comments/communication.iml.jsonc",
+					"staticParams": "modules/watch-comments/static-params.iml.jsonc",
+					"mappableParams": "modules/watch-comments/mappable-params.iml.jsonc",
+					"interface": "modules/watch-comments/interface.iml.jsonc",
+					"samples": "modules/watch-comments/samples.iml.jsonc"
+				}
+			},
+			"watch-task-assignments": {
+				"label": "Watch Task Assignments",
+				"description": "Triggers when a task is assigned to someone.",
+				"moduleType": "instant_trigger",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"webhook": "task-assigned",
+				"codeFiles": {
+					"communication": "modules/watch-task-assignments/communication.iml.jsonc",
+					"staticParams": "modules/watch-task-assignments/static-params.iml.jsonc",
+					"mappableParams": "modules/watch-task-assignments/mappable-params.iml.jsonc",
+					"interface": "modules/watch-task-assignments/interface.iml.jsonc",
+					"samples": "modules/watch-task-assignments/samples.iml.jsonc"
+				}
+			},
+			"watch-projects": {
+				"label": "Watch New Projects",
+				"description": "Triggers when a project is created.",
+				"moduleType": "instant_trigger",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"webhook": "project-created",
+				"codeFiles": {
+					"communication": "modules/watch-projects/communication.iml.jsonc",
+					"staticParams": "modules/watch-projects/static-params.iml.jsonc",
+					"mappableParams": "modules/watch-projects/mappable-params.iml.jsonc",
+					"interface": "modules/watch-projects/interface.iml.jsonc",
+					"samples": "modules/watch-projects/samples.iml.jsonc"
+				}
+			},
+			"watch-project-assignments": {
+				"label": "Watch Project Assignments",
+				"description": "Triggers when a project is assigned to someone.",
+				"moduleType": "instant_trigger",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"webhook": "project-assigned",
+				"codeFiles": {
+					"communication": "modules/watch-project-assignments/communication.iml.jsonc",
+					"staticParams": "modules/watch-project-assignments/static-params.iml.jsonc",
+					"mappableParams": "modules/watch-project-assignments/mappable-params.iml.jsonc",
+					"interface": "modules/watch-project-assignments/interface.iml.jsonc",
+					"samples": "modules/watch-project-assignments/samples.iml.jsonc"
+				}
+			},
+			"watch-project-members": {
+				"label": "Watch New Project Members",
+				"description": "Triggers when someone joins a project.",
+				"moduleType": "instant_trigger",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"webhook": "project-joined",
+				"codeFiles": {
+					"communication": "modules/watch-project-members/communication.iml.jsonc",
+					"staticParams": "modules/watch-project-members/static-params.iml.jsonc",
+					"mappableParams": "modules/watch-project-members/mappable-params.iml.jsonc",
+					"interface": "modules/watch-project-members/interface.iml.jsonc",
+					"samples": "modules/watch-project-members/samples.iml.jsonc"
+				}
+			},
+			"create-task": {
+				"label": "Create a Task",
+				"description": "Creates a task in a project.",
+				"moduleType": "action",
+				"actionCrud": "create",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/create-task/communication.iml.jsonc",
+					"staticParams": "modules/create-task/static-params.iml.jsonc",
+					"mappableParams": "modules/create-task/mappable-params.iml.jsonc",
+					"interface": "modules/create-task/interface.iml.jsonc",
+					"samples": "modules/create-task/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"update-task": {
+				"label": "Update a Task",
+				"description": "Replaces the text of a task.",
+				"moduleType": "action",
+				"actionCrud": "update",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/update-task/communication.iml.jsonc",
+					"staticParams": "modules/update-task/static-params.iml.jsonc",
+					"mappableParams": "modules/update-task/mappable-params.iml.jsonc",
+					"interface": "modules/update-task/interface.iml.jsonc",
+					"samples": "modules/update-task/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"complete-task": {
+				"label": "Complete a Task",
+				"description": "Marks a task as complete. A recurring task moves to its next date instead.",
+				"moduleType": "action",
+				"actionCrud": "update",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/complete-task/communication.iml.jsonc",
+					"staticParams": "modules/complete-task/static-params.iml.jsonc",
+					"mappableParams": "modules/complete-task/mappable-params.iml.jsonc",
+					"interface": "modules/complete-task/interface.iml.jsonc",
+					"samples": "modules/complete-task/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"delete-task": {
+				"label": "Delete a Task",
+				"description": "Deletes a task and its subtasks.",
+				"moduleType": "action",
+				"actionCrud": "delete",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/delete-task/communication.iml.jsonc",
+					"staticParams": "modules/delete-task/static-params.iml.jsonc",
+					"mappableParams": "modules/delete-task/mappable-params.iml.jsonc",
+					"interface": "modules/delete-task/interface.iml.jsonc",
+					"samples": "modules/delete-task/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"move-task": {
+				"label": "Move a Task",
+				"description": "Moves a task to another position in its project.",
+				"moduleType": "action",
+				"actionCrud": "update",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/move-task/communication.iml.jsonc",
+					"staticParams": "modules/move-task/static-params.iml.jsonc",
+					"mappableParams": "modules/move-task/mappable-params.iml.jsonc",
+					"interface": "modules/move-task/interface.iml.jsonc",
+					"samples": "modules/move-task/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"assign-task": {
+				"label": "Assign a Task",
+				"description": "Adds assignees to a task. Current assignees stay assigned.",
+				"moduleType": "action",
+				"actionCrud": "update",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/assign-task/communication.iml.jsonc",
+					"staticParams": "modules/assign-task/static-params.iml.jsonc",
+					"mappableParams": "modules/assign-task/mappable-params.iml.jsonc",
+					"interface": "modules/assign-task/interface.iml.jsonc",
+					"samples": "modules/assign-task/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"set-task-date": {
+				"label": "Set a Task Date",
+				"description": "Sets the date of a task, with an optional time.",
+				"moduleType": "action",
+				"actionCrud": "update",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/set-task-date/communication.iml.jsonc",
+					"staticParams": "modules/set-task-date/static-params.iml.jsonc",
+					"mappableParams": "modules/set-task-date/mappable-params.iml.jsonc",
+					"interface": "modules/set-task-date/interface.iml.jsonc",
+					"samples": "modules/set-task-date/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"set-task-note": {
+				"label": "Set a Task Note",
+				"description": "Creates or replaces the note of a task.",
+				"moduleType": "action",
+				"actionCrud": "update",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/set-task-note/communication.iml.jsonc",
+					"staticParams": "modules/set-task-note/static-params.iml.jsonc",
+					"mappableParams": "modules/set-task-note/mappable-params.iml.jsonc",
+					"interface": "modules/set-task-note/interface.iml.jsonc",
+					"samples": "modules/set-task-note/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"set-task-field": {
+				"label": "Set a Task Custom Field",
+				"description": "Sets the value of a custom field on a task.",
+				"moduleType": "action",
+				"actionCrud": "update",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/set-task-field/communication.iml.jsonc",
+					"staticParams": "modules/set-task-field/static-params.iml.jsonc",
+					"mappableParams": "modules/set-task-field/mappable-params.iml.jsonc",
+					"interface": "modules/set-task-field/interface.iml.jsonc",
+					"samples": "modules/set-task-field/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"create-project": {
+				"label": "Create a Project",
+				"description": "Creates a project from Markdown. The first heading becomes the project title.",
+				"moduleType": "action",
+				"actionCrud": "create",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/create-project/communication.iml.jsonc",
+					"staticParams": "modules/create-project/static-params.iml.jsonc",
+					"mappableParams": "modules/create-project/mappable-params.iml.jsonc",
+					"interface": "modules/create-project/interface.iml.jsonc",
+					"samples": "modules/create-project/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"create-project-from-template": {
+				"label": "Create a Project from a Template",
+				"description": "Creates a project from one of your project templates.",
+				"moduleType": "action",
+				"actionCrud": "create",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/create-project-from-template/communication.iml.jsonc",
+					"staticParams": "modules/create-project-from-template/static-params.iml.jsonc",
+					"mappableParams": "modules/create-project-from-template/mappable-params.iml.jsonc",
+					"interface": "modules/create-project-from-template/interface.iml.jsonc",
+					"samples": "modules/create-project-from-template/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"copy-project": {
+				"label": "Copy a Project",
+				"description": "Copies a project to a workspace or folder.",
+				"moduleType": "action",
+				"actionCrud": "create",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/copy-project/communication.iml.jsonc",
+					"staticParams": "modules/copy-project/static-params.iml.jsonc",
+					"mappableParams": "modules/copy-project/mappable-params.iml.jsonc",
+					"interface": "modules/copy-project/interface.iml.jsonc",
+					"samples": "modules/copy-project/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"get-project": {
+				"label": "Get a Project",
+				"description": "Retrieves a project by ID.",
+				"moduleType": "action",
+				"actionCrud": "read",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/get-project/communication.iml.jsonc",
+					"staticParams": "modules/get-project/static-params.iml.jsonc",
+					"mappableParams": "modules/get-project/mappable-params.iml.jsonc",
+					"interface": "modules/get-project/interface.iml.jsonc",
+					"samples": "modules/get-project/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"prompt-agent": {
+				"label": "Prompt an AI Agent",
+				"description": "Sends a prompt to a Taskade AI agent and returns its answer.",
+				"moduleType": "action",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/prompt-agent/communication.iml.jsonc",
+					"staticParams": "modules/prompt-agent/static-params.iml.jsonc",
+					"mappableParams": "modules/prompt-agent/mappable-params.iml.jsonc",
+					"interface": "modules/prompt-agent/interface.iml.jsonc",
+					"samples": "modules/prompt-agent/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"generate-agent": {
+				"label": "Generate an AI Agent",
+				"description": "Creates a Taskade AI agent from a plain-language description.",
+				"moduleType": "action",
+				"actionCrud": "create",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/generate-agent/communication.iml.jsonc",
+					"staticParams": "modules/generate-agent/static-params.iml.jsonc",
+					"mappableParams": "modules/generate-agent/mappable-params.iml.jsonc",
+					"interface": "modules/generate-agent/interface.iml.jsonc",
+					"samples": "modules/generate-agent/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"list-tasks": {
+				"label": "List Tasks",
+				"description": "Lists the tasks in a project, in outline order.",
+				"moduleType": "search",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/list-tasks/communication.iml.jsonc",
+					"staticParams": "modules/list-tasks/static-params.iml.jsonc",
+					"mappableParams": "modules/list-tasks/mappable-params.iml.jsonc",
+					"interface": "modules/list-tasks/interface.iml.jsonc",
+					"samples": "modules/list-tasks/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"list-projects": {
+				"label": "List Projects",
+				"description": "Lists the projects in a workspace or folder.",
+				"moduleType": "search",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/list-projects/communication.iml.jsonc",
+					"staticParams": "modules/list-projects/static-params.iml.jsonc",
+					"mappableParams": "modules/list-projects/mappable-params.iml.jsonc",
+					"interface": "modules/list-projects/interface.iml.jsonc",
+					"samples": "modules/list-projects/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"list-agents": {
+				"label": "List AI Agents",
+				"description": "Lists the AI agents in a workspace or folder.",
+				"moduleType": "search",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/list-agents/communication.iml.jsonc",
+					"staticParams": "modules/list-agents/static-params.iml.jsonc",
+					"mappableParams": "modules/list-agents/mappable-params.iml.jsonc",
+					"interface": "modules/list-agents/interface.iml.jsonc",
+					"samples": "modules/list-agents/samples.iml.jsonc",
+					"scope": null
+				}
+			},
+			"make-api-call": {
+				"label": "Make an API Call",
+				"description": "Performs an arbitrary authorized API call.",
+				"moduleType": "universal",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "modules/make-api-call/communication.iml.jsonc",
+					"staticParams": "modules/make-api-call/static-params.iml.jsonc",
+					"mappableParams": "modules/make-api-call/mappable-params.iml.jsonc",
+					"interface": "modules/make-api-call/interface.iml.jsonc",
+					"samples": "modules/make-api-call/samples.iml.jsonc",
+					"scope": null
+				}
+			}
+		},
+		"rpc": {
+			"list-workspaces": {
+				"label": "List Workspaces",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-workspaces/communication.iml.jsonc",
+					"params": "rpcs/list-workspaces/params.iml.jsonc"
+				}
+			},
+			"list-folders": {
+				"label": "List Folders",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-folders/communication.iml.jsonc",
+					"params": "rpcs/list-folders/params.iml.jsonc"
+				}
+			},
+			"list-projects": {
+				"label": "List Recent Projects",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-projects/communication.iml.jsonc",
+					"params": "rpcs/list-projects/params.iml.jsonc"
+				}
+			},
+			"list-tasks": {
+				"label": "List Tasks",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-tasks/communication.iml.jsonc",
+					"params": "rpcs/list-tasks/params.iml.jsonc"
+				}
+			},
+			"list-agents": {
+				"label": "List AI Agents",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-agents/communication.iml.jsonc",
+					"params": "rpcs/list-agents/params.iml.jsonc"
+				}
+			},
+			"list-fields": {
+				"label": "List Custom Fields",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-fields/communication.iml.jsonc",
+					"params": "rpcs/list-fields/params.iml.jsonc"
+				}
+			},
+			"list-members": {
+				"label": "List Project Members",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-members/communication.iml.jsonc",
+					"params": "rpcs/list-members/params.iml.jsonc"
+				}
+			},
+			"list-templates": {
+				"label": "List Project Templates",
+				"connection": "taskade",
+				"altConnection": "taskade-token",
+				"codeFiles": {
+					"communication": "rpcs/list-templates/communication.iml.jsonc",
+					"params": "rpcs/list-templates/params.iml.jsonc"
+				}
+			}
+		},
+		"function": {},
+		"endpoint": {}
+	},
+	"origins": [
+		{
+			"label": "-FILL-ME- Taskade (Make app ID and zone after you create the app)",
+			"baseUrl": "-FILL-ME- Example: https://us1.make.com/api",
+			"appId": "-FILL-ME- The app ID that Make shows after you create the app",
+			"appVersion": 1,
+			"apikeyFile": ".secrets/apikey"
+		}
+	]
+}

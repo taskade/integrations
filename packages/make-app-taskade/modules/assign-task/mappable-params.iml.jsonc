@@ -1,0 +1,30 @@
+[
+	{
+		"name": "projectId",
+		"type": "select",
+		"label": "Project",
+		"required": true,
+		"help": "Select one of the projects you viewed recently, or map a project ID.",
+		"options": {
+			"store": "rpc://list-projects",
+			"nested": [
+				{
+					"name": "taskId",
+					"type": "select",
+					"label": "Task",
+					"required": true,
+					"options": "rpc://list-tasks"
+				},
+				{
+					"name": "handles",
+					"type": "select",
+					"label": "Assignees",
+					"multiple": true,
+					"required": true,
+					"options": "rpc://list-members",
+					"help": "Select project members, or map their Taskade handles."
+				}
+			]
+		}
+	}
+]
