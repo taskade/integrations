@@ -35,6 +35,11 @@ export const authentication = {
     refreshAccessToken: {
       body: {
         refresh_token: '{{bundle.authData.refresh_token}}',
+        // The token endpoint authenticates the client on every grant, refresh
+        // included (client_secret_post). Without these two fields, it rejects
+        // each refresh with "client_id is required".
+        client_id: '{{process.env.CLIENT_ID}}',
+        client_secret: '{{process.env.CLIENT_SECRET}}',
         grant_type: 'refresh_token',
       },
       headers: {
