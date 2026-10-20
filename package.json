@@ -1,6 +1,6 @@
 {
   "name": "taskade",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "Taskade is a collaboration platform for remote teams to organize and manage projects.",
   "main": "index.js",
   "scripts": {

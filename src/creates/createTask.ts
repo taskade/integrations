@@ -106,20 +106,64 @@ const taskDueDateReqVariables = (z: ZObject, bundle: Bundle) => {
   return date;
 };
 
+const splitContentIntoChunks = (content: string, maxChunkSize: number = 2000): string[] => {
+  if (content.length <= maxChunkSize) {
+    return [content];
+  }
+
+  const chunks: string[] = [];
+  let currentIndex = 0;
+
+  while (currentIndex < content.length) {
+    let endIndex = currentIndex + maxChunkSize;
+
+    // If we're not at the end of the string, try to find a good breaking point
+    if (endIndex < content.length) {
+      // Look for the last space, newline, or punctuation within the chunk
+      const searchStart = Math.max(currentIndex, endIndex - 100); // Look back up to 100 chars
+      const breakPoints = ['\n', '. ', '! ', '? ', ', ', '; ', ' '];
+
+      let bestBreakPoint = -1;
+      for (const breakPoint of breakPoints) {
+        const lastIndex = content.lastIndexOf(breakPoint, endIndex - 1);
+        if (lastIndex > searchStart) {
+          bestBreakPoint = Math.max(bestBreakPoint, lastIndex + breakPoint.length);
+        }
+      }
+
+      if (bestBreakPoint > -1) {
+        endIndex = bestBreakPoint;
+      }
+    }
+
+    chunks.push(content.slice(currentIndex, endIndex).trim());
+    currentIndex = endIndex;
+  }
+
+  return chunks.filter((chunk) => chunk.length > 0);
+};
+
 const perform = async (z: ZObject, bundle: Bundle) => {
-  let task: CreateTaskInput = {
-    contentType: 'text/markdown',
-    content: bundle.inputData.content as string,
-    placement: 'beforeend',
-  };
-  if (bundle.inputData.block_id != null) {
-    task = {
-      taskId: bundle.inputData.block_id as string,
+  const content = bundle.inputData.content as string;
+  const contentChunks = splitContentIntoChunks(content, 2000);
+  if (contentChunks.length > 20) {
+    throw new z.errors.Error('Input content too large', 'invalid_input', 400);
+  }
+
+  const tasks: CreateTaskInput[] = contentChunks.map((chunk) => {
+    const task: CreateTaskInput = {
       contentType: 'text/markdown',
-      content: bundle.inputData.content as string,
+      content: chunk,
       placement: 'beforeend',
     };
-  }
+
+    if (bundle.inputData.block_id != null) {
+      task.taskId = bundle.inputData.block_id as string;
+    }
+
+    return task;
+  });
+
   const createTaskResponse = await z.request({
     url: `https://www.taskade.com/api/v1/projects/${bundle.inputData.project_id}/tasks`,
     method: 'POST',
@@ -129,7 +173,7 @@ const perform = async (z: ZObject, bundle: Bundle) => {
       authorization: `Bearer ${bundle.authData.access_token}`,
     },
     body: JSON.stringify({
-      tasks: [task],
+      tasks: tasks,
     }),
   });
 
