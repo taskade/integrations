@@ -15,6 +15,10 @@ Building a Taskade integration for another platform (n8n, Activepieces, Make, Pi
 | n8n | Source in [`packages/n8n-nodes-taskade`](packages/n8n-nodes-taskade) (package `n8n-nodes-taskade` 0.2.0). Not yet published to npm. |
 | Activepieces, Make, Pipedream | Planned. No code in this repo yet. |
 
+## Recipes
+
+Step-by-step recipes connect Taskade with Make, n8n, Square and any app with an API key today. They use the Taskade webhook trigger, the HTTP step and the Public Action API v2. Start at the [recipes index](recipes/README.md).
+
 ## Zapier app capabilities
 
 | Type | Keys | Notes |
