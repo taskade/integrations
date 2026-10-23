@@ -13,21 +13,23 @@ The Taskade node for n8n is ready for n8n verification in [PR #32](https://githu
 1. In Taskade, open **Settings**, then **API**, and click **Create token**. Copy the token. It starts with `tskdp_`.
 2. In n8n, add an **HTTP Request** node. Set **Method** to `POST` and **URL** to `https://www.taskade.com/api/v2/createTask`.
 3. Set **Authentication** to **Generic Credential Type**, then **Header Auth**. Use the name `Authorization` and the value `Bearer tskdp_YOUR_TOKEN`.
-4. Turn on **Send Body**, pick **JSON**, and paste the body below with your project ID. The project ID is in the Taskade address bar, after `/d/`.
+4. Turn on **Send Body** and pick **JSON**. Set the JSON field to **Expression**, and paste the expression below with your project ID. The project ID is in the Taskade address bar, after `/d/`.
 5. Click **Execute step**. Make sure that Taskade answers `{"ok":true,...}` and that the task shows in your project.
 6. To start n8n from Taskade, add an n8n **Webhook** node with the method `POST`, and copy its **Production URL**.
 7. In a Taskade automation, add **When a task is added**, then **Send HTTP Request** with **Method** `POST`, the n8n URL and **Request Body Type** **JSON**. Activate the n8n workflow.
 
 Request body for step 4:
 
-```json
-{
+```js
+{{ {
   "projectId": "YOUR_PROJECT_ID",
   "tasks": [
-    { "contentType": "text/markdown", "content": "{{ $json.title }}", "placement": "beforeend" }
+    { "contentType": "text/markdown", "content": $json.title, "placement": "beforeend" }
   ]
-}
+} }}
 ```
+
+The expression returns the whole body as an object, and n8n serializes it. Do not put `{{ $json.title }}` inside quoted JSON text. n8n does not escape the value there, so a title such as `Call "Acme"` makes the body invalid.
 
 ## Check the result
 
@@ -46,4 +48,4 @@ You are done when an n8n run adds a task to your project, and a new Taskade task
 ## Checked
 
 - Taskade steps, labels and the `createTask` body: checked against the Taskade app and the [v2 spec](https://www.taskade.com/api/documentation/v2) on 2026-10-22.
-- n8n labels (**HTTP Request**, **Generic Credential Type**, **Header Auth**, **Send Body**, **Execute step**, **Webhook**, **Production URL**): taken from n8n's public docs. Not checked in an n8n instance.
+- n8n labels (**HTTP Request**, **Generic Credential Type**, **Header Auth**, **Send Body**, **Expression**, **Execute step**, **Webhook**, **Production URL**): taken from n8n's public docs. Not checked in an n8n instance.

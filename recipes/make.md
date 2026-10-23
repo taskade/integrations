@@ -14,9 +14,10 @@ The official Taskade app for Make is in review. [PR #34](https://github.com/task
 2. Open the Taskade project for the new tasks. Copy the project ID from the address bar, after `/d/`.
 3. In Make, add the **HTTP** app's **Make a request** module. Set the method to `POST` and the URL to `https://www.taskade.com/api/v2/createTask`.
 4. Add the header `Authorization` with the value `Bearer tskdp_YOUR_TOKEN`. Add the header `Content-Type` with the value `application/json`.
-5. Set the body to raw JSON and paste the body below. Map your Make values into `content`.
-6. Run the module once. Make sure that Taskade answers `{"ok":true,...}` and that the task shows in your project.
-7. To start a scenario from Taskade, copy the URL of a Make **Custom webhook** module. In a Taskade automation, add **When a task is added**, then **Send HTTP Request** with **Method** `POST`, that **URL** and **Request Body Type** **JSON**.
+5. Before the HTTP module, add the **JSON** app's **Create JSON** module. Give it the structure of the body below, and map your Make values into `content`.
+6. In the HTTP module, set the body to raw JSON and map the **JSON string** output of **Create JSON** as the request content. Do not type mapped values into raw JSON text. Raw text does not escape a quote or a line break in a value, so a name such as `Jane "JJ" Doe` breaks the request.
+7. Run the scenario once. Make sure that Taskade answers `{"ok":true,...}` and that the task shows in your project.
+8. To start a scenario from Taskade, copy the URL of a Make **Custom webhook** module. In a Taskade automation, add **When a task is added**, then **Send HTTP Request** with **Method** `POST`, that **URL** and **Request Body Type** **JSON**.
 
 Request body for step 5:
 
@@ -52,4 +53,4 @@ You are done when a Make run adds a task to your project, and a new Taskade task
 ## Checked
 
 - Taskade steps, labels and the `createTask` body: checked against the Taskade app and the [v2 spec](https://www.taskade.com/api/documentation/v2) on 2026-10-22.
-- Make labels (**HTTP**, **Make a request**, **Custom webhook**): taken from Make's public docs. Not checked in a Make account.
+- Make labels (**HTTP**, **Make a request**, **Custom webhook**, **JSON**, **Create JSON**, **JSON string**): taken from Make's public docs. Not checked in a Make account.
