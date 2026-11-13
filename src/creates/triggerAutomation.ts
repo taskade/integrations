@@ -25,7 +25,7 @@ const perform = async (z: ZObject, bundle: Bundle) => {
 
   if (response.status >= 400) {
     throw new z.errors.Error(
-      `Automation webhook returned ${response.status} — check the webhook URL is current.`,
+      `Automation webhook returned ${response.status}. Make sure that the webhook URL is current and the automation is on.`,
       'invalid_input',
       response.status,
     );
@@ -38,9 +38,9 @@ export default {
   key: 'trigger_automation',
   noun: 'Automation Run',
   display: {
-    label: 'Trigger Taskade Automation',
+    label: 'Run Automation',
     description:
-      'Starts a Taskade automation that uses a Webhook trigger, passing an optional JSON payload.',
+      'Starts a Taskade automation that begins with a webhook trigger, and sends it optional JSON data. Webhook triggers require a Taskade Pro plan or higher.',
     hidden: false,
   },
   operation: {

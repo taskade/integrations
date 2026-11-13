@@ -36,7 +36,7 @@ export default {
         label: 'Note',
         type: 'string',
         required: true,
-        helpText: 'Note content — single line, no line breaks.',
+        helpText: 'The note text, on a single line with no line breaks.',
       },
       {
         key: 'note_type',

@@ -32,7 +32,7 @@ export default {
   display: {
     label: 'Custom API Call',
     description:
-      'Make an authenticated request to any Taskade API endpoint. Advanced — see developer.taskade.com.',
+      'Makes an authenticated request to any Taskade API endpoint. For advanced users.',
     hidden: false,
   },
   operation: {
@@ -50,7 +50,8 @@ export default {
         label: 'URL or Path',
         type: 'string',
         required: true,
-        helpText: 'A full URL, or a path such as `/api/v1/me/projects`.',
+        helpText:
+          'A full URL, or a path such as `/api/v2/listSpaces`. See the [API docs](https://www.taskade.com/api/documentation/v2).',
       },
       {
         key: 'body',
