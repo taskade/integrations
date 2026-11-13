@@ -19,7 +19,7 @@ Building a Taskade integration for another platform (n8n, Activepieces, Make, Pi
 
 ## Zapier app capabilities
 
-All triggers are instant (webhooks). The 5 triggers on the public webhook-subscription API need a Taskade Pro plan or higher. Actions and searches work on every plan. Run AI Agent uses AI credits, and Run Automation needs an automation with a webhook trigger, which also needs Pro.
+All triggers are instant (webhooks). The 5 triggers on the public webhook-subscription API need a Taskade Pro plan or higher. Actions and searches do not need Pro. Run AI Agent and Generate AI Agent use AI credits, and Run Automation needs an automation with a webhook trigger, which also needs Pro.
 
 | Type | Name | Key | Notes |
 |---|---|---|---|

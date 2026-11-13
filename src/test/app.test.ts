@@ -217,7 +217,12 @@ describe('Taskade Genesis actions and searches', () => {
 
   it('creates projects as Markdown, the only content type the endpoint accepts', async () => {
     const { z, calls } = fakeZ({ ok: true, item: { id: 'project-1', name: 'Plan' } });
-    await CreateProject.operation.perform(z, fakeBundle({ space_id: 'folder-1', content: '# Plan' }));
+    // A Zap saved with the removed "Plain text" option still holds content_type.
+    await CreateProject.operation.perform(
+      z,
+      fakeBundle({ space_id: 'folder-1', content: '# Plan', content_type: 'text/plain' }),
+    );
+    expect(CreateProject.operation.inputFields.map((field) => field.key)).not.toContain('content_type');
     expect(JSON.parse(calls[0].body ?? '{}')).toEqual({
       folderId: 'folder-1',
       contentType: 'text/markdown',
