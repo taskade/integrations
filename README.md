@@ -81,6 +81,7 @@ The test suite validates the full app definition with `zapier-platform-schema`'s
 2. Add the release notes to `CHANGELOG.md`
 3. `yarn build && zapier push`
 4. Test each new trigger, action and search in a Zap, then `zapier promote <version>`
+5. `zapier migrate <old version> <new version> <percent>` moves existing users to the new version. Start with a small percent and watch `zapier logs`
 
 Deploying to the live Zapier app is a deliberate, manual step — never automatic on merge.
 

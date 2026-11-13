@@ -51,7 +51,7 @@ export default {
         type: 'string',
         required: true,
         helpText:
-          'A full URL, or a path such as `/api/v2/listSpaces`. See the [API docs](https://www.taskade.com/api/documentation/v2).',
+          'A full URL, or a path such as `/api/v2/listSpaces`. Version 2 paths need the Method POST. See the [API docs](https://www.taskade.com/api/documentation/v2).',
       },
       {
         key: 'body',
