@@ -7,6 +7,8 @@ const perform = async (z: ZObject, bundle: Bundle) => {
   const response = await request(z, bundle, {
     method: 'GET',
     path: `/folders/${bundle.inputData.space_id}/agents`,
+    // The route returns 20 agents by default. Ask for more so older agents show too.
+    params: { limit: '100' },
   });
 
   const data: ApiResponse = parseOk(z, response.json);
