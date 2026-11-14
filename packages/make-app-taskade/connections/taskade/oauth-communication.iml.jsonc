@@ -1,0 +1,90 @@
+{
+	"authorize": {
+		"url": "https://www.taskade.com/oauth2/authorize",
+		"qs": {
+			"client_id": "{{ifempty(parameters.clientId, common.clientId)}}",
+			"redirect_uri": "{{oauth.localRedirectUri}}",
+			"response_type": "code"
+		},
+		"response": {
+			"temp": {
+				"code": "{{query.code}}"
+			}
+		}
+	},
+	"token": {
+		"url": "https://www.taskade.com/oauth2/token",
+		"method": "POST",
+		"type": "urlencoded",
+		"body": {
+			"grant_type": "authorization_code",
+			"code": "{{temp.code}}",
+			"redirect_uri": "{{oauth.localRedirectUri}}",
+			"client_id": "{{ifempty(parameters.clientId, common.clientId)}}",
+			"client_secret": "{{ifempty(parameters.clientSecret, common.clientSecret)}}"
+		},
+		"response": {
+			"data": {
+				"accessToken": "{{body.access_token}}",
+				"refreshToken": "{{body.refresh_token}}",
+				"expires": "{{addSeconds(now, body.expires_in)}}"
+			}
+		},
+		"log": {
+			"sanitize": [
+				"request.body.code",
+				"request.body.client_secret",
+				"response.body.access_token",
+				"response.body.refresh_token"
+			]
+		}
+	},
+	"refresh": {
+		"condition": "{{data.expires < addMinutes(now, 5)}}",
+		"url": "https://www.taskade.com/oauth2/token",
+		"method": "POST",
+		"type": "urlencoded",
+		"body": {
+			"grant_type": "refresh_token",
+			"refresh_token": "{{data.refreshToken}}",
+			"client_id": "{{ifempty(parameters.clientId, common.clientId)}}",
+			"client_secret": "{{ifempty(parameters.clientSecret, common.clientSecret)}}"
+		},
+		"response": {
+			"data": {
+				"accessToken": "{{body.access_token}}",
+				"refreshToken": "{{ifempty(body.refresh_token, data.refreshToken)}}",
+				"expires": "{{addSeconds(now, body.expires_in)}}"
+			}
+		},
+		"log": {
+			"sanitize": [
+				"request.body.client_secret",
+				"request.body.refresh_token",
+				"response.body.access_token",
+				"response.body.refresh_token"
+			]
+		}
+	},
+	"info": {
+		"url": "https://www.taskade.com/oauth2/ping",
+		"headers": {
+			"Authorization": "Bearer {{connection.accessToken}}"
+		},
+		"response": {
+			"metadata": {
+				"type": "text",
+				"value": "@{{body.handle}}"
+			},
+			"uid": "{{body.handle}}",
+			"error": {
+				"message": "[{{statusCode}}] {{ifempty(body.message, body.error)}}"
+			}
+		},
+		"log": {
+			"sanitize": [
+				"request.headers.authorization"
+			]
+		}
+	}
+}

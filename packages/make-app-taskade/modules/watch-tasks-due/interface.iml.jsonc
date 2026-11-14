@@ -1,0 +1,77 @@
+[
+	{
+		"name": "spaceId",
+		"type": "text",
+		"label": "Workspace ID"
+	},
+	{
+		"name": "spaceName",
+		"type": "text",
+		"label": "Workspace name"
+	},
+	{
+		"name": "projectId",
+		"type": "text",
+		"label": "Project ID"
+	},
+	{
+		"name": "projectName",
+		"type": "text",
+		"label": "Project name"
+	},
+	{
+		"name": "id",
+		"type": "text",
+		"label": "Task ID"
+	},
+	{
+		"name": "text",
+		"type": "text",
+		"label": "Task text"
+	},
+	{
+		"name": "isCompleted",
+		"type": "boolean",
+		"label": "Completed"
+	},
+	{
+		"name": "assignees",
+		"type": "array",
+		"label": "Assignees",
+		"spec": {
+			"type": "text"
+		}
+	},
+	{
+		"name": "taskStartDate",
+		"type": "date",
+		"label": "Start date",
+		"time": false
+	},
+	{
+		"name": "taskStartTime",
+		"type": "text",
+		"label": "Start time"
+	},
+	{
+		"name": "taskStartTimezone",
+		"type": "text",
+		"label": "Start timezone"
+	},
+	{
+		"name": "taskEndDate",
+		"type": "date",
+		"label": "End date",
+		"time": false
+	},
+	{
+		"name": "taskEndTime",
+		"type": "text",
+		"label": "End time"
+	},
+	{
+		"name": "taskEndTimezone",
+		"type": "text",
+		"label": "End timezone"
+	}
+]

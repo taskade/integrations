@@ -15,7 +15,7 @@ Building a Taskade integration for another platform (n8n, Activepieces, Make, Pi
 | Activepieces | Live: [Taskade on Activepieces](https://www.activepieces.com/pieces/taskade) (`@activepieces/piece-taskade`). Activepieces maintains the piece in [its own repo](https://github.com/activepieces/activepieces). |
 | Pipedream | Live: [Taskade on Pipedream](https://pipedream.com/apps/taskade). Pipedream maintains the components in [its own repo](https://github.com/PipedreamHQ/pipedream). |
 | n8n | Source in [`packages/n8n-nodes-taskade`](packages/n8n-nodes-taskade). Not yet published to npm. |
-| Make | In review: the official Make app is in [#34](https://github.com/taskade/integrations/pull/34). Not yet on Make. |
+| Make | Source in [`packages/make-app-taskade`](packages/make-app-taskade) (Make Apps Editor local layout: OAuth2 and token connections, 6 instant triggers, 15 actions, 3 searches, a universal module). Not yet submitted: see [`SUBMISSION.md`](packages/make-app-taskade/SUBMISSION.md). |
 
 ## Zapier app capabilities
 

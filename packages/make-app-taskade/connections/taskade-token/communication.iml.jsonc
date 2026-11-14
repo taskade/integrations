@@ -1,0 +1,24 @@
+{
+	"url": "https://www.taskade.com/oauth2/ping",
+	"headers": {
+		"Authorization": "Bearer {{parameters.accessToken}}"
+	},
+	"response": {
+		"metadata": {
+			"type": "text",
+			"value": "@{{body.handle}}"
+		},
+		"error": {
+			"401": {
+				"type": "InvalidAccessTokenError",
+				"message": "[401] Taskade rejected the personal access token. Create a new token in Taskade under Settings > API."
+			},
+			"message": "[{{statusCode}}] {{ifempty(body.message, body.error)}}"
+		}
+	},
+	"log": {
+		"sanitize": [
+			"request.headers.authorization"
+		]
+	}
+}

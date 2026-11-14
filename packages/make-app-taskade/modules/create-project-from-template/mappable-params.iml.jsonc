@@ -1,0 +1,43 @@
+[
+	{
+		"name": "spaceId",
+		"type": "select",
+		"label": "Workspace",
+		"required": true,
+		"options": {
+			"store": "rpc://list-workspaces",
+			"nested": [
+				{
+					"name": "folderId",
+					"type": "select",
+					"label": "Folder",
+					"help": "Optional. Leave empty to use the workspace itself.",
+					"options": {
+						"store": "rpc://list-folders",
+						"nested": [
+							{
+								"name": "templateId",
+								"type": "select",
+								"label": "Template",
+								"required": true,
+								"options": "rpc://list-templates"
+							}
+						],
+						"placeholder": {
+							"label": "Use the workspace",
+							"nested": [
+								{
+									"name": "templateId",
+									"type": "select",
+									"label": "Template",
+									"required": true,
+									"options": "rpc://list-templates"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	}
+]

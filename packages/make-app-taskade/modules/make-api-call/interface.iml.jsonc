@@ -1,0 +1,17 @@
+[
+	{
+		"name": "body",
+		"type": "any",
+		"label": "Body"
+	},
+	{
+		"name": "headers",
+		"type": "collection",
+		"label": "Headers"
+	},
+	{
+		"name": "statusCode",
+		"type": "number",
+		"label": "Status code"
+	}
+]

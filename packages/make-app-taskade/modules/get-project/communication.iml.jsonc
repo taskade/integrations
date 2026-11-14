@@ -1,0 +1,10 @@
+{
+	"url": "/v2/getProject",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

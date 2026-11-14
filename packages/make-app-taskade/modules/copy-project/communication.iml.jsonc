@@ -1,0 +1,12 @@
+{
+	"url": "/v2/copyProject",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"destinationSpaceId": "{{ifempty(parameters.folderId, parameters.spaceId)}}",
+		"projectTitle": "{{ifempty(parameters.projectTitle, undefined)}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

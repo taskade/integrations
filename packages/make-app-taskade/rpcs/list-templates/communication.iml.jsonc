@@ -1,0 +1,25 @@
+{
+	"url": "/v2/listTemplates",
+	"method": "POST",
+	"body": {
+		"folderId": "{{ifempty(parameters.folderId, parameters.spaceId)}}",
+		"limit": 100,
+		"page": 1
+	},
+	"response": {
+		"limit": 500,
+		"iterate": "{{body.items}}",
+		"output": {
+			"label": "{{ifempty(item.name, ifempty(item.title, item.id))}}",
+			"value": "{{item.id}}"
+		}
+	},
+	"pagination": {
+		"body": {
+			"folderId": "{{ifempty(parameters.folderId, parameters.spaceId)}}",
+			"limit": 100,
+			"page": "{{pagination.page}}"
+		},
+		"condition": "{{length(body.items) >= 100}}"
+	}
+}

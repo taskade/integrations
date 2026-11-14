@@ -1,0 +1,17 @@
+{
+	"url": "/v2/setTaskNote",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}",
+		"type": "{{parameters.contentType}}",
+		"value": "{{parameters.note}}"
+	},
+	"response": {
+		"output": {
+			"taskId": "{{parameters.taskId}}",
+			"type": "{{body.item.type}}",
+			"value": "{{body.item.value}}"
+		}
+	}
+}

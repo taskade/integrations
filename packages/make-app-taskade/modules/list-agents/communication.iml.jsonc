@@ -1,0 +1,12 @@
+{
+	"url": "/v2/listAgents",
+	"method": "POST",
+	"body": {
+		"spaceId": "{{ifempty(parameters.folderId, parameters.spaceId)}}"
+	},
+	"response": {
+		"iterate": "{{body.items}}",
+		"output": "{{item}}",
+		"limit": "{{parameters.limit}}"
+	}
+}

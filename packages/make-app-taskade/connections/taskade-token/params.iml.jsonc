@@ -1,0 +1,10 @@
+[
+	{
+		"name": "accessToken",
+		"type": "password",
+		"label": "Personal access token",
+		"required": true,
+		"editable": true,
+		"help": "Create a token in Taskade under [Settings > API](https://www.taskade.com/settings/api). The token starts with `tskdp_`."
+	}
+]

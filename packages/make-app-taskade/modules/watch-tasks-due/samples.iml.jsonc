@@ -1,0 +1,18 @@
+{
+	"spaceId": "8pVZCzz6ubkbhxkS",
+	"spaceName": "Acme",
+	"projectId": "F6Rsgnp1h8sd5w5Q",
+	"projectName": "Launch plan",
+	"id": "3f1c2d5e-1b2a-4c3d-9e8f-0a1b2c3d4e5f",
+	"text": "Send the launch brief",
+	"isCompleted": false,
+	"assignees": [
+		"ada"
+	],
+	"taskStartDate": "2026-10-09",
+	"taskStartTime": "09:00:00",
+	"taskStartTimezone": "America/New_York",
+	"taskEndDate": null,
+	"taskEndTime": null,
+	"taskEndTimezone": null
+}

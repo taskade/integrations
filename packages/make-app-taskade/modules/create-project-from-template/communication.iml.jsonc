@@ -1,0 +1,11 @@
+{
+	"url": "/v2/createProjectFromTemplate",
+	"method": "POST",
+	"body": {
+		"spaceId": "{{ifempty(parameters.folderId, parameters.spaceId)}}",
+		"templateId": "{{parameters.templateId}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

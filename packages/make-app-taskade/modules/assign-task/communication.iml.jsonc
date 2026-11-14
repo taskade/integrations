@@ -1,0 +1,12 @@
+{
+	"url": "/v2/assignTask",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}",
+		"handles": "{{parameters.handles}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

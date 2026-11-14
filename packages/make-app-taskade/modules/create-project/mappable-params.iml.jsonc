@@ -1,0 +1,28 @@
+[
+	{
+		"name": "spaceId",
+		"type": "select",
+		"label": "Workspace",
+		"required": true,
+		"options": {
+			"store": "rpc://list-workspaces",
+			"nested": [
+				{
+					"name": "folderId",
+					"type": "select",
+					"label": "Folder",
+					"help": "Optional. Leave empty to use the workspace itself.",
+					"options": "rpc://list-folders"
+				}
+			]
+		}
+	},
+	{
+		"name": "content",
+		"type": "text",
+		"label": "Content (Markdown)",
+		"required": true,
+		"multiline": true,
+		"help": "For example: `# Launch plan` followed by `- Draft the brief` on the next line."
+	}
+]

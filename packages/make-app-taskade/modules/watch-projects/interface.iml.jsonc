@@ -1,0 +1,27 @@
+[
+	{
+		"name": "spaceId",
+		"type": "text",
+		"label": "Workspace ID"
+	},
+	{
+		"name": "spaceName",
+		"type": "text",
+		"label": "Workspace name"
+	},
+	{
+		"name": "projectId",
+		"type": "text",
+		"label": "Project ID"
+	},
+	{
+		"name": "projectName",
+		"type": "text",
+		"label": "Project name"
+	},
+	{
+		"name": "creatorName",
+		"type": "text",
+		"label": "Created by"
+	}
+]

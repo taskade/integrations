@@ -1,0 +1,11 @@
+{
+	"url": "/v2/generateAgent",
+	"method": "POST",
+	"body": {
+		"folderId": "{{ifempty(parameters.folderId, parameters.spaceId)}}",
+		"text": "{{parameters.text}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

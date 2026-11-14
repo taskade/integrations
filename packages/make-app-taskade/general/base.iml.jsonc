@@ -1,0 +1,40 @@
+{
+	"baseUrl": "https://www.taskade.com/api",
+	"headers": {
+		"Authorization": "Bearer {{connection.accessToken}}"
+	},
+	"response": {
+		"error": {
+			"400": {
+				"type": "DataError",
+				"message": "[400] {{ifempty(body.message, 'Taskade rejected the request.')}}"
+			},
+			"401": {
+				"type": "InvalidAccessTokenError",
+				"message": "[401] Taskade rejected the access token. Reconnect your Taskade connection. {{body.message}}"
+			},
+			"402": {
+				"type": "InvalidConfigurationError",
+				"message": "[402] {{ifempty(body.message, 'This feature needs a higher Taskade plan.')}}"
+			},
+			"403": {
+				"type": "InvalidConfigurationError",
+				"message": "[403] {{ifempty(body.message, 'You do not have access to this Taskade item.')}}"
+			},
+			"404": {
+				"type": "DataError",
+				"message": "[404] {{ifempty(body.message, 'The Taskade item was not found.')}}"
+			},
+			"429": {
+				"type": "RateLimitError",
+				"message": "[429] Taskade rate limit reached. Try again later. {{body.message}}"
+			},
+			"message": "[{{statusCode}}] {{ifempty(body.message, body.code)}}"
+		}
+	},
+	"log": {
+		"sanitize": [
+			"request.headers.authorization"
+		]
+	}
+}
