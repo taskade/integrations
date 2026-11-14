@@ -5,6 +5,9 @@ on:
     branches: [master]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -18,3 +21,24 @@ jobs:
       - run: yarn lint
       - run: yarn build
       - run: yarn test
+
+  n8n-node:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/n8n-nodes-taskade
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: packages/n8n-nodes-taskade/package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Run the n8n community package scanner on the source and the tarball
+        run: |
+          npm install --no-save --prefix "${RUNNER_TEMP}/n8n-scanner" @n8n/scan-community-package@0.38.0
+          npm run scan -- "${RUNNER_TEMP}/n8n-scanner"

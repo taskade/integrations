@@ -1,6 +1,7 @@
 import { Bundle, ZObject } from 'zapier-platform-core';
 
 import { ApiResponse, parseOk, request } from '../client';
+import { spaceField } from '../fields';
 
 const perform = async (z: ZObject, bundle: Bundle) => {
   const response = await request(z, bundle, {
@@ -24,35 +25,38 @@ export default {
   noun: 'Agent Response',
   display: {
     label: 'Run AI Agent',
-    description: 'Sends a prompt to a Taskade AI agent and returns its response.',
+    description:
+      'Sends a prompt to a Taskade AI agent and returns its reply. Each run uses AI credits from your Taskade plan.',
     hidden: false,
   },
   operation: {
     inputFields: [
       {
-        key: 'space_id',
-        label: 'Workspace ID',
-        type: 'string',
-        required: true,
-        helpText: 'The ID of the workspace the agent belongs to.',
+        ...spaceField(true),
+        label: 'Folder',
+        altersDynamicFields: true,
+        helpText: 'The workspace or folder that holds the agent.',
       },
       {
         key: 'agent_id',
-        label: 'Agent ID',
+        label: 'Agent',
         type: 'string',
+        dynamic: 'get_all_agents.id.title',
+        search: 'find_agent.id',
         required: true,
-        helpText: 'The ID of the agent to prompt.',
+        list: false,
+        altersDynamicFields: false,
       },
       {
         key: 'prompt',
         label: 'Prompt',
         type: 'text',
         required: true,
-        helpText: 'The message to send to the agent.',
+        helpText: 'The message to send to the agent, for example "Summarize this support email".',
       },
     ],
     perform,
     sample: { summary: 'Here is the agent response.' },
-    outputFields: [{ key: 'summary', label: 'Response' }],
+    outputFields: [{ key: 'summary', label: 'Agent Reply' }],
   },
 };

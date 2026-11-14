@@ -25,8 +25,10 @@ import SetTaskNote from './creates/setTaskNote';
 import TriggerAutomation from './creates/triggerAutomation';
 import UpdateAgent from './creates/updateAgent';
 import UpdateTask from './creates/updateTask';
+import FindAgent from './searches/findAgent';
 import FindProject from './searches/findProject';
 import FindTask from './searches/findTask';
+import GetProjectContent from './searches/getProjectContent';
 import GetAllAgents from './triggers/getAllAgents';
 import GetAllAssignableMembers from './triggers/getAllAssignableMembers';
 import GetAllBlocks from './triggers/getAllBlocks';
@@ -102,5 +104,7 @@ export default {
   searches: {
     [FindTask.key]: FindTask,
     [FindProject.key]: FindProject,
+    [GetProjectContent.key]: GetProjectContent,
+    [FindAgent.key]: FindAgent,
   },
 };
