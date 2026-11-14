@@ -50,7 +50,8 @@ Notes:
 - **Workspace or Folder** fields accept a workspace ID or a folder ID. The list shows both.
 - **Project** fields list the projects you viewed most recently. Use **By URL** to paste a project link (`https://www.taskade.com/d/...`), or **By ID**.
 - **Agent > Prompt** returns `{ agentId, response }`, where `response` is the answer of the agent.
-- **Task > Set Custom Field** sends a numeric value as a number. A select field takes the option ID, not its label.
+- **Task > Set Custom Field** sends the value as a number to a number field, and as text to every other field. A select field takes the option ID, not its label.
+- **Project > Enable Share Link** returns the existing link when the share link is already on.
 - **Task > Update** and **Task > Set Note** take one line of text. The API rejects line breaks there.
 - **Task > Set Date** uses the workflow timezone unless you set **Timezone**. A value with an offset (for example `2026-10-09T15:00:00Z`) is converted to that timezone.
 - The Taskade node is `usableAsTool`. An n8n AI Agent can call it as a tool.
@@ -71,7 +72,7 @@ The **Taskade Trigger** node starts a workflow when one of these events occurs:
 How it works:
 
 - When you activate the workflow, the node registers a signed webhook with `POST /webhooks`. When you deactivate it, the node deletes the webhook.
-- Taskade signs each delivery with `X-Taskade-Signature: sha256=<HMAC-SHA256 of the body>`. The node rejects a delivery with a wrong signature (HTTP 401).
+- Taskade signs each delivery with `X-Taskade-Timestamp` and `X-Taskade-Signature-V2: sha256=<HMAC-SHA256 of "<timestamp>.<body>">`. The node rejects a delivery with a wrong signature, or one more than 5 minutes old, with HTTP 401. A captured delivery therefore cannot be replayed later.
 - **Workspace or Folder Names or IDs** limits the events to some workspaces or folders. A workspace does not include its folders, so select each folder too. Leave it empty to get events from everything you can access.
 
 Requirements:

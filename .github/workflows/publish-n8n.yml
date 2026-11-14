@@ -56,7 +56,7 @@ jobs:
       - run: npm run build
       - name: Run the n8n community package scanner on the source and the tarball
         run: |
-          npm install --no-save --prefix "${RUNNER_TEMP}/n8n-scanner" @n8n/scan-community-package@0.38.0
+          npm install --no-save --ignore-scripts --prefix "${RUNNER_TEMP}/n8n-scanner" @n8n/scan-community-package@0.38.0
           npm run scan -- "${RUNNER_TEMP}/n8n-scanner"
       - name: Publish with provenance
         # In CI, `n8n-node release` runs lint and build, then `npm publish` with provenance.
@@ -67,7 +67,12 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Scan the published version (the check n8n runs)
         # A failure here means n8n will reject this version. Fix it and publish a new version.
+        # The scanner and its dependencies are not locked, so their install scripts must not
+        # run in this job, which can mint an npm publish token.
+        env:
+          npm_config_ignore_scripts: 'true'
         run: |
+          npm config delete //registry.npmjs.org/:_authToken || true
           version=$(node -p "require('./package.json').version")
           for attempt in 1 2 3 4 5 6; do
             output=$(npx --yes @n8n/scan-community-package@0.38.0 "n8n-nodes-taskade@${version}" 2>&1) || true

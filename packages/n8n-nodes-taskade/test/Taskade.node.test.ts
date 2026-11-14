@@ -107,12 +107,6 @@ describe('Taskade node operations map to Public API v2', () => {
       },
     },
     {
-      name: 'task set custom field sends numbers as numbers',
-      params: { resource: 'task', operation: 'setFieldValue', projectId: 'p1', taskId: 't1', fieldId: 'f1', value: '42' },
-      endpoint: '/setTaskFieldValue',
-      body: { projectId: 'p1', taskId: 't1', fieldId: 'f1', value: 42 },
-    },
-    {
       name: 'project create',
       params: { resource: 'project', operation: 'create', spaceId: 's1', content: '# Plan' },
       endpoint: '/createProject',
@@ -146,12 +140,6 @@ describe('Taskade node operations map to Public API v2', () => {
       name: 'project restore',
       params: { resource: 'project', operation: 'restore', projectId: 'p1' },
       endpoint: '/restoreProject',
-      body: { projectId: 'p1' },
-    },
-    {
-      name: 'project enable share link',
-      params: { resource: 'project', operation: 'enableShareLink', projectId: 'p1' },
-      endpoint: '/enableShareLink',
       body: { projectId: 'p1' },
     },
     {
@@ -239,6 +227,43 @@ describe('Taskade node operations map to Public API v2', () => {
     ).rejects.toThrow('Project not found');
   });
 
+  it('sends a number only to a number field', async () => {
+    const fields = { ok: true, items: [{ id: 'f1', data: { type: 'number' } }, { id: 'f2', data: { type: 'text' } }] };
+    const respond = (path: string) => (path === '/listFields' ? fields : { ok: true });
+    const numberField = await run(
+      { resource: 'task', operation: 'setFieldValue', projectId: 'p1', taskId: 't1', fieldId: 'f1', value: '42' },
+      respond,
+    );
+    expect(numberField.calls.map((c) => c.url)).toEqual(['/listFields', '/setTaskFieldValue']);
+    expect(numberField.calls[1].body).toEqual({ projectId: 'p1', taskId: 't1', fieldId: 'f1', value: 42 });
+    const textField = await run(
+      { resource: 'task', operation: 'setFieldValue', projectId: 'p1', taskId: 't1', fieldId: 'f2', value: '19.99' },
+      respond,
+    );
+    expect(textField.calls[1].body).toEqual({ projectId: 'p1', taskId: 't1', fieldId: 'f2', value: '19.99' });
+  });
+
+  it('returns the existing share link and turns it on only when it is off', async () => {
+    const link = { editUrl: 'https://www.taskade.com/d/p1?share=edit', viewUrl: 'https://www.taskade.com/d/p1?share=view' };
+    const params = { resource: 'project', operation: 'enableShareLink', projectId: 'p1' };
+    const on = await run(params, () => ({ ok: true, item: link }));
+    expect(on.calls.map((c) => c.url)).toEqual(['/getShareLink']);
+    const off = await run(params, (path) => ({ ok: true, item: path === '/getShareLink' ? null : link }));
+    expect(off.calls.map((c) => c.url)).toEqual(['/getShareLink', '/enableShareLink']);
+    expect(off.calls[1].body).toEqual({ projectId: 'p1' });
+  });
+
+  it('shows the Taskade message of a non-2xx response, not the generic status text', async () => {
+    const httpError = Object.assign(new Error('Request failed with status code 402'), {
+      response: { status: 402, data: { ok: false, code: 'PAYMENT_REQUIRED', message: 'Webhooks require a Pro plan or higher.' } },
+    });
+    await expect(
+      run({ resource: 'project', operation: 'get', projectId: 'p1' }, () => {
+        throw httpError;
+      }),
+    ).rejects.toThrow('Webhooks require a Pro plan or higher.');
+  });
+
   it('rejects Before or After without a relative task', async () => {
     await expect(
       run({ resource: 'task', operation: 'create', projectId: 'p1', content: 'x', contentType: 'text/plain', options: { placement: 'afterend' } }),
@@ -247,17 +272,30 @@ describe('Taskade node operations map to Public API v2', () => {
 });
 
 describe('list search', () => {
-  it('lists workspaces and their folders', async () => {
-    const context = createContext({ authentication: 'accessToken' }, (path, body) =>
-      path === '/listSpaces'
-        ? { ok: true, items: [{ id: 's1', name: 'Acme' }] }
-        : { ok: true, items: [{ id: `${String(body?.spaceId)}-f`, name: 'Marketing' }] },
-    );
+  it('lists workspaces and folders from one listSpaces call', async () => {
+    const context = createContext({ authentication: 'accessToken' }, () => ({
+      ok: true,
+      items: [
+        { id: 's1', name: 'Acme' },
+        { id: 's1-f', name: 'Marketing' },
+      ],
+    }));
     const result = await node.methods.listSearch.searchSpaces.call(context as unknown as ILoadOptionsFunctions);
+    expect(context.calls.map((c) => c.url)).toEqual(['/listSpaces']);
     expect(result.results).toEqual([
       { name: 'Acme', value: 's1' },
-      { name: 'Acme / Marketing', value: 's1-f' },
+      { name: 'Marketing', value: 's1-f' },
     ]);
+  });
+
+  it('offers the built-in taa agent only for Prompt', async () => {
+    const agents = () => ({ ok: true, items: [{ id: 'taa', name: 'Taskade Agent (TAA)' }, { id: 'a1', name: 'Triage' }] });
+    const forGet = createContext({ authentication: 'accessToken', spaceId: 's1', operation: 'get' }, agents);
+    const forPrompt = createContext({ authentication: 'accessToken', spaceId: 's1', operation: 'prompt' }, agents);
+    const get = await node.methods.listSearch.searchAgents.call(forGet as unknown as ILoadOptionsFunctions);
+    const prompt = await node.methods.listSearch.searchAgents.call(forPrompt as unknown as ILoadOptionsFunctions);
+    expect(get.results.map((r) => r.value)).toEqual(['a1']);
+    expect(prompt.results.map((r) => r.value)).toEqual(['taa', 'a1']);
   });
 });
 

@@ -53,7 +53,14 @@ export async function taskadeApiRequest(
       options,
     )) as IDataObject;
   } catch (error) {
-    throw new NodeApiError(this.getNode(), error as JsonObject);
+    const apiError = new NodeApiError(this.getNode(), error as JsonObject);
+    // For a non-2xx response, n8n sets a generic status text as the message
+    // ("Payment required - ...") and keeps the Taskade message only in the
+    // description. Show the Taskade message, for example "Webhooks require a Pro plan or higher."
+    if (typeof apiError.description === 'string' && apiError.description !== '') {
+      apiError.message = apiError.description;
+    }
+    throw apiError;
   }
 
   if (response?.ok === false) {

@@ -151,21 +151,15 @@ export class Taskade implements INodeType {
         this: ILoadOptionsFunctions,
         filter?: string,
       ): Promise<INodeListSearchResult> {
+        // listSpaces already returns every workspace and folder that the user is a
+        // member of, so one request is enough. A listFolders call for each row
+        // would only repeat rows and use up the per-IP rate limit of the API.
         const spaces = (await taskadeApiRequest.call(this, '/listSpaces')).items as IDataObject[];
         const results: INodeListSearchResult['results'] = [];
         for (const space of spaces ?? []) {
           const spaceName = String(space.name ?? space.id);
           if (matchesFilter(spaceName, filter)) {
             results.push({ name: spaceName, value: String(space.id) });
-          }
-          const folders = (
-            await taskadeApiRequest.call(this, '/listFolders', { spaceId: space.id })
-          ).items as IDataObject[];
-          for (const folder of folders ?? []) {
-            const name = `${spaceName} / ${String(folder.name ?? folder.id)}`;
-            if (matchesFilter(name, filter)) {
-              results.push({ name, value: String(folder.id) });
-            }
           }
         }
         return { results };
@@ -219,11 +213,16 @@ export class Taskade implements INodeType {
         }
         const agents = (await taskadeApiRequest.call(this, '/listAgents', body))
           .items as IDataObject[];
+        // `taa` is the built-in Taskade agent. Only Prompt accepts it: Get and
+        // Add Project Knowledge look up a saved agent, so `taa` fails there.
+        const operation = this.getCurrentNodeParameter('operation') as string;
         return {
-          results: (agents ?? []).map((agent) => ({
-            name: String(agent.name || agent.id),
-            value: String(agent.id),
-          })),
+          results: (agents ?? [])
+            .filter((agent) => operation === 'prompt' || agent.id !== 'taa')
+            .map((agent) => ({
+              name: String(agent.name || agent.id),
+              value: String(agent.id),
+            })),
         };
       },
     },
@@ -366,9 +365,16 @@ async function executeOperation(
       case 'restore':
         return (await call('/restoreProject', { projectId: locator('projectId') }))
           .item as IDataObject;
-      case 'enableShareLink':
-        return (await call('/enableShareLink', { projectId: locator('projectId') }))
-          .item as IDataObject;
+      case 'enableShareLink': {
+        const projectId = locator('projectId');
+        // enableShareLink answers CONFLICT when the link is already on, so a
+        // workflow that runs again returns the existing link instead of failing.
+        const existing = (await call('/getShareLink', { projectId })).item as IDataObject | null;
+        if (existing != null) {
+          return existing;
+        }
+        return (await call('/enableShareLink', { projectId })).item as IDataObject;
+      }
     }
   }
 
@@ -455,13 +461,21 @@ async function executeOperation(
         }
         return (await call('/setTaskDate', body)).item as IDataObject;
       }
-      case 'setFieldValue':
+      case 'setFieldValue': {
+        const fieldId = param<string>('fieldId');
+        const raw = param<string>('value');
+        // A number field takes a JSON number. Every other field takes the text as is:
+        // a text field refuses a decimal number such as 19.99.
+        const fields = ((await call('/listFields', { projectId })).items as IDataObject[]) ?? [];
+        const field = fields.find((candidate) => candidate.id === fieldId);
+        const isNumberField = ((field?.data ?? {}) as IDataObject).type === 'number';
         await call('/setTaskFieldValue', {
           ...target,
-          fieldId: param<string>('fieldId'),
-          value: toFieldValue(param<string>('value')),
+          fieldId,
+          value: isNumberField ? toFieldValue(raw) : raw,
         });
-        return { id: taskId, fieldId: param<string>('fieldId'), success: true };
+        return { id: taskId, fieldId, success: true };
+      }
     }
   }
 

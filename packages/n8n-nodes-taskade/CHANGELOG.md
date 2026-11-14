@@ -10,5 +10,5 @@ First npm release.
 - Project: Create, Create From Template, Copy, Get, Get Many, Complete, Restore, Enable Share Link.
 - Agent: Prompt, Generate, Get, Get Many, Add Project Knowledge.
 - Workspace and Folder: Get Many.
-- Taskade Trigger: signed webhooks (`POST /webhooks`) with signature checks, and an optional workspace filter.
+- Taskade Trigger: signed webhooks (`POST /webhooks`) with `X-Taskade-Signature-V2` checks that refuse a delivery more than 5 minutes old, and an optional workspace filter.
 - Published from GitHub Actions with npm provenance.

@@ -216,7 +216,7 @@ export const taskFields: INodeProperties[] = [
     required: true,
     default: '',
     description:
-      'The value to set. A numeric value is sent as a number. A select field takes the option ID, not its label.',
+      'The value to set. A number field takes a number. A select field takes the option ID, not its label.',
     displayOptions: show(['setFieldValue']),
   },
 

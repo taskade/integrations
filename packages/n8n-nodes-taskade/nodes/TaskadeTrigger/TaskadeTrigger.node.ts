@@ -13,20 +13,31 @@ import { NodeConnectionTypes } from 'n8n-workflow';
 
 import { taskadeApiRequest } from '../Taskade/GenericFunctions';
 
+/** A delivery older than this fails the check, so a captured delivery cannot be replayed later. */
+export const MAX_SIGNATURE_AGE_SECONDS = 300;
+
 /**
- * Checks the `X-Taskade-Signature` header of a delivery.
- * Taskade signs the raw JSON body: `sha256=` + hex(HMAC-SHA256(secret, rawBody)).
+ * Checks the `X-Taskade-Signature-V2` header of a delivery.
+ * Taskade signs `<X-Taskade-Timestamp>.<raw JSON body>`:
+ * `sha256=` + hex(HMAC-SHA256(secret, timestamp + '.' + rawBody)).
+ * The v1 `X-Taskade-Signature` covers only the body, so it is not accepted:
+ * a replayed delivery could strip the V2 headers and fall back to it.
  */
 export function isValidSignature(
   secret: string,
   rawBody: Buffer | string,
+  timestamp: string | undefined,
   header: string | undefined,
+  nowSeconds: number = Math.floor(Date.now() / 1000),
 ): boolean {
-  if (!header) {
+  if (!header || !timestamp || !/^\d+$/.test(timestamp)) {
     return false;
   }
-  const expected = `sha256=${createHmac('sha256', secret).update(rawBody).digest('hex')}`;
-  const expectedBuffer = Buffer.from(expected);
+  if (Math.abs(nowSeconds - Number(timestamp)) > MAX_SIGNATURE_AGE_SECONDS) {
+    return false;
+  }
+  const digest = createHmac('sha256', secret).update(`${timestamp}.`).update(rawBody).digest('hex');
+  const expectedBuffer = Buffer.from(`sha256=${digest}`);
   const headerBuffer = Buffer.from(header);
   return (
     expectedBuffer.length === headerBuffer.length && timingSafeEqual(expectedBuffer, headerBuffer)
@@ -119,19 +130,13 @@ export class TaskadeTrigger implements INodeType {
   methods = {
     loadOptions: {
       async getSpaces(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+        // listSpaces already returns every workspace and folder that the user is a
+        // member of, so one request is enough. A listFolders call for each row
+        // would only repeat rows and use up the per-IP rate limit of the API.
         const spaces = (await taskadeApiRequest.call(this, '/listSpaces')).items as IDataObject[];
         const options: INodePropertyOptions[] = [];
         for (const space of spaces ?? []) {
-          const spaceName = String(space.name ?? space.id);
-          options.push({ name: spaceName, value: String(space.id) });
-          const folders = (await taskadeApiRequest.call(this, '/listFolders', { spaceId: space.id }))
-            .items as IDataObject[];
-          for (const folder of folders ?? []) {
-            options.push({
-              name: `${spaceName} / ${String(folder.name ?? folder.id)}`,
-              value: String(folder.id),
-            });
-          }
+          options.push({ name: String(space.name ?? space.id), value: String(space.id) });
         }
         return options;
       },
@@ -186,13 +191,15 @@ export class TaskadeTrigger implements INodeType {
   async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
     const secret = this.getWorkflowStaticData('node').secret;
     const body = this.getBodyData() as IDataObject;
-    const signature = this.getHeaderData()['x-taskade-signature'] as string | undefined;
+    const headers = this.getHeaderData();
+    const signature = headers['x-taskade-signature-v2'] as string | undefined;
+    const timestamp = headers['x-taskade-timestamp'] as string | undefined;
     // Taskade signs JSON.stringify(payload). When n8n keeps no raw body, the same
     // serialization of the parsed body gives the same bytes.
     const rawBody =
       (this.getRequestObject() as unknown as { rawBody?: Buffer }).rawBody ?? JSON.stringify(body);
 
-    if (typeof secret !== 'string' || !isValidSignature(secret, rawBody, signature)) {
+    if (typeof secret !== 'string' || !isValidSignature(secret, rawBody, timestamp, signature)) {
       const response = this.getResponseObject();
       response.status(401).json({ ok: false, message: 'Invalid signature' });
       return { noWebhookResponse: true };
