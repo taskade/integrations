@@ -135,7 +135,7 @@
 			},
 			"watch-comments": {
 				"label": "Watch New Comments",
-				"description": "Triggers when someone comments on a task.",
+				"description": "Triggers when someone else comments on a task in a project you are a member of.",
 				"moduleType": "instant_trigger",
 				"connection": "taskade",
 				"altConnection": "taskade-token",
@@ -150,7 +150,7 @@
 			},
 			"watch-task-assignments": {
 				"label": "Watch Task Assignments",
-				"description": "Triggers when a task is assigned to someone.",
+				"description": "Triggers when someone else assigns a task to you.",
 				"moduleType": "instant_trigger",
 				"connection": "taskade",
 				"altConnection": "taskade-token",
@@ -180,7 +180,7 @@
 			},
 			"watch-project-assignments": {
 				"label": "Watch Project Assignments",
-				"description": "Triggers when a project is assigned to someone.",
+				"description": "Triggers when someone else assigns a project to you.",
 				"moduleType": "instant_trigger",
 				"connection": "taskade",
 				"altConnection": "taskade-token",

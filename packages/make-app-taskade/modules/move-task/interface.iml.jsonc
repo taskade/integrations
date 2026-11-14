@@ -5,11 +5,6 @@
 		"label": "Task ID"
 	},
 	{
-		"name": "text",
-		"type": "text",
-		"label": "Text"
-	},
-	{
 		"name": "completed",
 		"type": "boolean",
 		"label": "Completed"

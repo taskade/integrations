@@ -4,7 +4,7 @@
 		"type": "text",
 		"label": "URL",
 		"required": true,
-		"help": "Enter a path relative to `https://www.taskade.com/api`. For example: `/v2/listSpaces`. See the [API reference](https://www.taskade.com/api/documentation/v2)."
+		"help": "Enter the path after `https://www.taskade.com/api/`, without a leading slash. For example: `v2/listSpaces`. A path that starts with `/` gets a 404 error. See the [API reference](https://www.taskade.com/api/documentation/v2)."
 	},
 	{
 		"name": "method",

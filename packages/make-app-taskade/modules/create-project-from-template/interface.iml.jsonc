@@ -3,10 +3,5 @@
 		"name": "id",
 		"type": "text",
 		"label": "Project ID"
-	},
-	{
-		"name": "name",
-		"type": "text",
-		"label": "Name"
 	}
 ]

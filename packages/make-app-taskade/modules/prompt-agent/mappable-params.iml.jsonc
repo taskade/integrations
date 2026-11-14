@@ -45,6 +45,7 @@
 		"type": "text",
 		"label": "Prompt",
 		"required": true,
-		"multiline": true
+		"multiline": true,
+		"help": "Each run uses AI credits from your Taskade plan. Make stops a module after 40 seconds. If the agent needs longer, Make shows an error, but Taskade still finishes the run and uses the credits. Do not turn on automatic retries for this module, because each retry runs the agent again."
 	}
 ]

@@ -15,6 +15,6 @@
 			"type": "text",
 			"label": "Folder ID"
 		},
-		"help": "Also get events from these folders. To find folder IDs, run Make an API Call with `POST /v2/listFolders` and the body `{\"spaceId\": \"<workspace ID>\"}`."
+		"help": "Also get events from these folders. To find folder IDs, run Make an API Call with the method `POST`, the URL `v2/listFolders`, and the body `{\"spaceId\": \"<workspace ID>\"}`."
 	}
 ]

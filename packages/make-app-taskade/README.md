@@ -33,7 +33,7 @@ test/validate.mjs            static checks
 
 Design notes:
 
-- The base URL is `https://www.taskade.com/api`, and modules call `/v2/<operation>`. The universal module fixes the same host and takes a path for `/v1/...` or `/v2/...`. Thus a mapped value cannot send the token to another host, as the Make review asks.
+- The base URL is `https://www.taskade.com/api`, and modules call `/v2/<operation>`. The universal module fixes the same host and takes a path such as `v1/...` or `v2/...`, with no leading slash. Thus a mapped value cannot send the token to another host, as the Make review asks.
 - The OAuth2 and the token connections both store the token as `connection.accessToken`, so one base header serves both.
 - A Workspace select has a nested Folder select. Modules send `ifempty(folderId, spaceId)`, because the API accepts a workspace ID or a folder ID.
 - Taskade signs webhook deliveries (`X-Taskade-Signature`), but a Make webhook cannot read the raw request body, so the app does not check the signature. Each dedicated webhook URL is secret to its scenario.
