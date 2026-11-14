@@ -1,23 +1,39 @@
 import { Bundle, ZObject } from 'zapier-platform-core';
 
+const TASKADE_ORIGIN = 'https://www.taskade.com';
+
 const perform = async (z: ZObject, bundle: Bundle) => {
-  const raw = bundle.inputData.url as string;
-  const url = raw.startsWith('http')
-    ? raw
-    : `https://www.taskade.com${raw.startsWith('/') ? '' : '/'}${raw}`;
+  const raw = String(bundle.inputData.url ?? '').trim();
+  // The request carries the user's Taskade token, so it may go only to Taskade.
+  // A relative path resolves against the Taskade host.
+  let url: URL;
+  try {
+    url = new URL(raw, TASKADE_ORIGIN);
+  } catch {
+    throw new z.errors.Error(`"${raw}" is not a valid URL or path.`, 'invalid_input', 400);
+  }
+  if (url.origin !== TASKADE_ORIGIN) {
+    throw new z.errors.Error(
+      `The URL must be on ${TASKADE_ORIGIN}. Use a path such as /api/v2/listSpaces.`,
+      'invalid_input',
+      400,
+    );
+  }
 
   const method =
     (bundle.inputData.http_method as 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH') || 'GET';
+  // The API rejects an empty body when the content type is JSON.
+  const hasBody = method === 'POST' || method === 'PUT' || method === 'PATCH';
 
   const response = await z.request({
-    url,
+    url: url.toString(),
     method,
     headers: {
       Accept: 'application/json',
       'content-type': 'application/json',
       authorization: `Bearer ${bundle.authData.access_token}`,
     },
-    body: bundle.inputData.body ? (bundle.inputData.body as string) : undefined,
+    body: bundle.inputData.body ? (bundle.inputData.body as string) : hasBody ? '{}' : undefined,
     // Don't auto-throw on 4xx/5xx: this escape hatch must surface the real
     // status + error body so power users can inspect failed calls.
     skipThrowForStatus: true,
@@ -51,7 +67,7 @@ export default {
         type: 'string',
         required: true,
         helpText:
-          'A full URL, or a path such as `/api/v2/listSpaces`. Version 2 paths need the Method POST. See the [API docs](https://www.taskade.com/api/documentation/v2).',
+          'A path such as `/api/v2/listSpaces`, or a full `https://www.taskade.com` URL. Version 2 paths need the Method POST. See the [API docs](https://www.taskade.com/api/documentation/v2).',
       },
       {
         key: 'body',

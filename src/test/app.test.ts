@@ -1,6 +1,7 @@
 import { Bundle, ZObject } from 'zapier-platform-core';
 
 import CreateProject from '../creates/createProject';
+import CustomApiCall from '../creates/customApiCall';
 import RunAgent from '../creates/runAgent';
 import App from '../index';
 import FindAgent from '../searches/findAgent';
@@ -234,5 +235,40 @@ describe('Taskade Genesis actions and searches', () => {
     const { z } = fakeZ({ ok: true, item: { id: 'p', name: 'n', content: 'c' } });
     const [result] = await GetProjectContent.operation.perform(z, fakeBundle({ project_id: 'p' }));
     expect(Object.keys(result).sort()).toEqual(Object.keys(GetProjectContent.operation.sample).sort());
+  });
+});
+
+describe('Review fixes', () => {
+  it('skips the built-in TAA agent and puts an exact name match first', async () => {
+    const { z } = fakeZ({
+      ok: true,
+      items: [
+        { id: 'taa', name: 'Taskade Agent (TAA)', description: 'The general purpose agent', tools: {} },
+        { id: 'agent-2', name: 'Sales Agent Follow-up', description: '', tools: {} },
+        { id: 'agent-1', name: 'Sales Agent', description: '', tools: {} },
+      ],
+    });
+    const result = await FindAgent.operation.perform(z, fakeBundle({ space_id: 'f', query: 'sales agent' }));
+    expect(result.map((agent: { id: string }) => agent.id)).toEqual(['agent-1', 'agent-2']);
+  });
+
+  it.each([
+    'https://attacker.example/x',
+    'http://www.taskade.com/api/v2/listSpaces',
+    '//attacker.example/x',
+    'https://www.taskade.com.attacker.example/x',
+  ])('refuses to send the token to %s', async (url) => {
+    const { z, calls } = fakeZ({});
+    await expect(
+      CustomApiCall.operation.perform(z, fakeBundle({ url, http_method: 'GET' })),
+    ).rejects.toThrow();
+    expect(calls).toHaveLength(0);
+  });
+
+  it('sends a Taskade path to Taskade with an empty JSON body on POST', async () => {
+    const { z, calls } = fakeZ({ ok: true });
+    await CustomApiCall.operation.perform(z, fakeBundle({ url: '/api/v2/listSpaces', http_method: 'POST' }));
+    expect(calls[0].url).toBe('https://www.taskade.com/api/v2/listSpaces');
+    expect(calls[0].body).toBe('{}');
   });
 });

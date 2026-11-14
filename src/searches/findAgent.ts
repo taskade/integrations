@@ -3,6 +3,8 @@ import { Bundle, ZObject } from 'zapier-platform-core';
 import { ApiResponse, parseOk, request } from '../client';
 import { spaceField } from '../fields';
 
+const TAA_AGENT_ID = 'taa';
+
 const perform = async (z: ZObject, bundle: Bundle) => {
   const response = await request(z, bundle, {
     method: 'POST',
@@ -15,12 +17,21 @@ const perform = async (z: ZObject, bundle: Bundle) => {
   });
 
   const data: ApiResponse = parseOk(z, response.json);
+  const query = String(bundle.inputData.query ?? '').toLowerCase();
 
-  return (data.items ?? []).map((agent) => ({
-    id: agent.id as string,
-    name: (agent.name ?? '') as string,
-    description: (agent.description ?? '') as string,
-  }));
+  const agents = (data.items ?? [])
+    // `taa` is the built-in Taskade agent that the API lists first. It is not
+    // one of the user's agents, so a name search must not pick it.
+    .filter((agent) => agent.id !== TAA_AGENT_ID)
+    .map((agent) => ({
+      id: agent.id as string,
+      name: (agent.name ?? '') as string,
+      description: (agent.description ?? '') as string,
+    }));
+
+  // Zapier uses the first result, so put an exact name match first.
+  const exact = agents.filter((agent) => agent.name.toLowerCase() === query);
+  return [...exact, ...agents.filter((agent) => agent.name.toLowerCase() !== query)];
 };
 
 export default {
