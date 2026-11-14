@@ -1,16 +1,23 @@
 {
   "name": "n8n-nodes-taskade",
-  "version": "0.2.0",
-  "description": "n8n community node for Taskade — tasks, projects, and AI agents on the Taskade public API",
+  "version": "1.0.0",
+  "description": "Official Taskade node for n8n: tasks, projects, workspaces, folders, AI agents, and signed instant triggers on the Taskade Public API v2",
   "keywords": [
     "n8n-community-node-package",
+    "n8n",
     "taskade",
     "tasks",
     "projects",
-    "ai-agents"
+    "ai-agents",
+    "project-management",
+    "productivity",
+    "workflow-automation"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/taskade/integrations",
+  "homepage": "https://github.com/taskade/integrations/tree/master/packages/n8n-nodes-taskade#readme",
+  "bugs": {
+    "url": "https://github.com/taskade/integrations/issues"
+  },
   "author": {
     "name": "Taskade",
     "email": "support@taskade.com"
@@ -21,30 +28,40 @@
     "directory": "packages/n8n-nodes-taskade"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20.15"
   },
-  "main": "index.js",
   "scripts": {
-    "build": "tsc && node -e \"require('fs').copyFileSync('nodes/Taskade/taskade.svg','dist/nodes/Taskade/taskade.svg')\"",
-    "dev": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "scan": "node scripts/scan.mjs",
+    "test": "vitest run",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
   },
   "files": [
     "dist"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
+    "strict": true,
     "credentials": [
-      "dist/credentials/TaskadeApi.credentials.js"
+      "dist/credentials/TaskadeApi.credentials.js",
+      "dist/credentials/TaskadeOAuth2Api.credentials.js"
     ],
     "nodes": [
       "dist/nodes/Taskade/Taskade.node.js",
-      "dist/nodes/Taskade/TaskadeTrigger.node.js"
+      "dist/nodes/TaskadeTrigger/TaskadeTrigger.node.js"
     ]
   },
   "devDependencies": {
-    "n8n-workflow": "^1.82.0",
-    "typescript": "^5.5.0"
+    "@n8n/node-cli": "0.51.4",
+    "eslint": "9.29.0",
+    "n8n-workflow": "2.16.0",
+    "typescript": "5.9.3",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "n8n-workflow": "*"

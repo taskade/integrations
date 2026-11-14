@@ -1,0 +1,22 @@
+{
+  "node": "n8n-nodes-taskade.taskade",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": ["Productivity"],
+  "subcategories": {
+    "Productivity": ["Project Management", "AI Agents"]
+  },
+  "alias": ["task", "todo", "project", "workspace", "folder", "agent", "ai", "checklist", "kanban"],
+  "resources": {
+    "credentialDocumentation": [
+      {
+        "url": "https://github.com/taskade/integrations/tree/master/packages/n8n-nodes-taskade#credentials"
+      }
+    ],
+    "primaryDocumentation": [
+      {
+        "url": "https://github.com/taskade/integrations/tree/master/packages/n8n-nodes-taskade#readme"
+      }
+    ]
+  }
+}
