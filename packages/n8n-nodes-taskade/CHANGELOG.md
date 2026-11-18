@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- No change to the node. This release is the first one from GitHub Actions through npm trusted publishing (OIDC), with no npm token.
+- The package now publishes with public access (`publishConfig.access`), which npm needs to make a provenance statement for a new package.
+
 ## 1.0.0
 
 First npm release.

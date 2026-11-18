@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-taskade",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official Taskade node for n8n: tasks, projects, workspaces, folders, AI agents, and signed instant triggers on the Taskade Public API v2",
   "keywords": [
     "n8n-community-node-package",
