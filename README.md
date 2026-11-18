@@ -11,10 +11,10 @@ Building a Taskade integration for another platform (n8n, Activepieces, Make, Pi
 
 | Platform | Status |
 |---|---|
-| Zapier | Live: [Taskade on Zapier](https://zapier.com/apps/taskade/integrations). The public version has 1 trigger (Task Due) and 1 action (Create Task). This source holds the full set below. Deploys are manual, so the live app version can lag this source. |
+| Zapier | Live: [Taskade on Zapier](https://zapier.com/apps/taskade/integrations). The public version (1.3.0) has every trigger, action and search in the table below. Deploys are manual, so the live app version can lag this source. |
 | Activepieces | Live: [Taskade on Activepieces](https://www.activepieces.com/pieces/taskade) (`@activepieces/piece-taskade`). Activepieces maintains the piece in [its own repo](https://github.com/activepieces/activepieces). |
 | Pipedream | Live: [Taskade on Pipedream](https://pipedream.com/apps/taskade). Pipedream maintains the components in [its own repo](https://github.com/PipedreamHQ/pipedream). |
-| n8n | Source in [`packages/n8n-nodes-taskade`](packages/n8n-nodes-taskade). Not yet published to npm. |
+| n8n | On npm: [`n8n-nodes-taskade`](https://www.npmjs.com/package/n8n-nodes-taskade), published from GitHub Actions with npm provenance. Self-hosted n8n installs it as a community node. Source in [`packages/n8n-nodes-taskade`](packages/n8n-nodes-taskade). Not verified by n8n yet: see [#17](https://github.com/taskade/integrations/issues/17). |
 | Make | Source in [`packages/make-app-taskade`](packages/make-app-taskade) (Make Apps Editor local layout: OAuth2 and token connections, 6 instant triggers, 15 actions, 3 searches, a universal module). Not yet submitted: see [`SUBMISSION.md`](packages/make-app-taskade/SUBMISSION.md). |
 
 ## Zapier app capabilities
