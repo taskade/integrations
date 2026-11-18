@@ -13,9 +13,9 @@ name: Publish n8n node
 #      n8n-nodes-taskade > Settings > Trusted Publisher > GitHub Actions,
 #      owner "taskade", repository "integrations", workflow "publish-n8n.yml".
 #      npm allows this only after the package exists, so the first release uses B.
-#   B. Token: a granular npm token with read and write access to
-#      n8n-nodes-taskade, saved as the repository secret NPM_TOKEN.
-#      Delete the secret after A works.
+#   B. Token: a granular npm token with read and write access, saved as the
+#      repository secret NPM_TOKEN. Delete the secret after A works.
+#      Trusted publishing is set up since 1.0.1 (2026-11-18), so B is not needed.
 on:
   push:
     tags: ['n8n-v*.*.*']
