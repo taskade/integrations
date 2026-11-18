@@ -4,7 +4,7 @@
 		"type": "select",
 		"label": "Workspaces",
 		"multiple": true,
-		"options": "rpc://list-workspaces",
+		"options": "rpc://listWorkspaces",
 		"help": "Only get events from these workspaces. A workspace does not include its folders. Leave this and Folder IDs empty to get events from everything you can access."
 	},
 	{

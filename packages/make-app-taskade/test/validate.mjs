@@ -230,6 +230,13 @@ for (const id of Object.keys(components.webhook)) {
     });
   }
 }
+// "Deploy to Make" creates a module or RPC with its local ID as the name, and refuses
+// an ID with a dash (Make Apps Editor 2.9.0, validate-id.js).
+for (const type of ['module', 'rpc']) {
+  for (const id of Object.keys(components[type])) {
+    if (!/^[a-zA-Z][0-9a-zA-Z]{2,47}$/.test(id)) fail(`${type}.${id}: the ID must be 3-48 letters and digits, starting with a letter`);
+  }
+}
 if (Object.values(components.module).filter((meta) => meta.moduleType === 'universal').length !== 1) {
   fail('the app needs exactly one universal module');
 }
@@ -315,7 +322,7 @@ if (spec === undefined && process.env.CI) {
     const match = /^(?:https:\/\/www\.taskade\.com\/api)?\/v2(\/[^?]*)$/.exec(request.url);
     if (!match) {
       // Only the universal module takes a path from the user.
-      if (!where.startsWith('module.make-api-call.')) fail(`${where}: ${request.url} is not a Public API v2 path`);
+      if (!where.startsWith('module.makeApiCall.')) fail(`${where}: ${request.url} is not a Public API v2 path`);
       continue;
     }
     const specPathKey = match[1].replace(/\{\{.*\}\}/, '{id}');

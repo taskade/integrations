@@ -5,14 +5,14 @@
 		"label": "Workspace",
 		"required": true,
 		"options": {
-			"store": "rpc://list-workspaces",
+			"store": "rpc://listWorkspaces",
 			"nested": [
 				{
 					"name": "folderId",
 					"type": "select",
 					"label": "Folder",
 					"help": "Optional. Leave empty to use the workspace itself.",
-					"options": "rpc://list-folders"
+					"options": "rpc://listFolders"
 				}
 			]
 		}

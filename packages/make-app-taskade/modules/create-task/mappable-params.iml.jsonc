@@ -6,14 +6,14 @@
 		"required": true,
 		"help": "Select one of the projects you viewed recently, or map a project ID.",
 		"options": {
-			"store": "rpc://list-projects",
+			"store": "rpc://listProjects",
 			"nested": [
 				{
 					"name": "relativeTaskId",
 					"type": "select",
 					"label": "Parent or sibling task",
 					"required": false,
-					"options": "rpc://list-tasks",
+					"options": "rpc://listTasks",
 					"help": "Optional. Place the new task relative to this task. Leave empty to add it to the top level of the project."
 				}
 			]

@@ -5,7 +5,7 @@
 		"label": "Workspace",
 		"required": true,
 		"options": {
-			"store": "rpc://list-workspaces",
+			"store": "rpc://listWorkspaces",
 			"nested": [
 				{
 					"name": "folderId",
@@ -13,14 +13,14 @@
 					"label": "Folder",
 					"help": "Optional. Leave empty to use the workspace itself.",
 					"options": {
-						"store": "rpc://list-folders",
+						"store": "rpc://listFolders",
 						"nested": [
 							{
 								"name": "agentId",
 								"type": "select",
 								"label": "AI agent",
 								"required": true,
-								"options": "rpc://list-agents"
+								"options": "rpc://listAgents"
 							}
 						],
 						"placeholder": {
@@ -31,7 +31,7 @@
 									"type": "select",
 									"label": "AI agent",
 									"required": true,
-									"options": "rpc://list-agents"
+									"options": "rpc://listAgents"
 								}
 							]
 						}

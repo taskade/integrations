@@ -6,21 +6,21 @@
 		"required": true,
 		"help": "Select one of the projects you viewed recently, or map a project ID.",
 		"options": {
-			"store": "rpc://list-projects",
+			"store": "rpc://listProjects",
 			"nested": [
 				{
 					"name": "taskId",
 					"type": "select",
 					"label": "Task",
 					"required": true,
-					"options": "rpc://list-tasks"
+					"options": "rpc://listTasks"
 				},
 				{
 					"name": "targetTaskId",
 					"type": "select",
 					"label": "Target task",
 					"required": true,
-					"options": "rpc://list-tasks"
+					"options": "rpc://listTasks"
 				}
 			]
 		}
