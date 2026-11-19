@@ -213,8 +213,8 @@ export class Taskade implements INodeType {
         }
         const agents = (await taskadeApiRequest.call(this, '/listAgents', body))
           .items as IDataObject[];
-        // `taa` is the built-in Taskade agent. Only Prompt accepts it: Get and
-        // Add Project Knowledge look up a saved agent, so `taa` fails there.
+        // The API lists the built-in agent (Taskade EVE). Only Prompt accepts it:
+        // Get and Add Project Knowledge look up a saved agent, so it fails there.
         const operation = this.getCurrentNodeParameter('operation') as string;
         return {
           results: (agents ?? [])

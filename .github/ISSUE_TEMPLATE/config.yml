@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Taskade API docs
+    url: https://www.taskade.com/docs
+    about: The public Taskade API, webhooks and authentication.
+  - name: Account and product help
+    url: https://www.taskade.com/contact
+    about: Questions about your Taskade account, billing or plan. Do not post them in a public issue.
