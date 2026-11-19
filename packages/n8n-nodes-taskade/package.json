@@ -60,11 +60,11 @@
     ]
   },
   "devDependencies": {
-    "@n8n/node-cli": "0.51.4",
+    "@n8n/node-cli": "0.57.4",
     "eslint": "9.29.0",
     "n8n-workflow": "2.49.1",
     "typescript": "5.9.3",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.11"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
