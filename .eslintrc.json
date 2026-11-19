@@ -15,6 +15,7 @@
   "rules": {
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-require-imports": "off",
     "curly": ["error", "all"],
     "eqeqeq": ["error", "always", { "null": "never" }],
     "no-implicit-coercion": "error",
