@@ -1,5 +1,7 @@
 import { Bundle, ZObject } from 'zapier-platform-core';
 
+import { dropdownPageParams } from '../client';
+
 interface ProjectMember {
   handle: string;
   displayName: string;
@@ -18,6 +20,13 @@ interface ProjectMembersResponseError {
 type ProjectMembersResponse = ProjectMembersResponseOk | ProjectMembersResponseError;
 
 const perform = async (z: ZObject, bundle: Bundle) => {
+  // The route returns 20 members by default. Ask for 100, and read the page
+  // that Zapier asks for when the user clicks "Load more".
+  const params = dropdownPageParams(bundle);
+  if (params == null) {
+    return [];
+  }
+
   const response = await z.request({
     url: `https://www.taskade.com/api/v1/projects/${bundle.inputData.project_id}/members`,
     method: 'GET',
@@ -26,6 +35,7 @@ const perform = async (z: ZObject, bundle: Bundle) => {
       'content-type': 'application/json',
       authorization: `Bearer ${bundle.authData.access_token}`,
     },
+    params,
   });
 
   const data: ProjectMembersResponse = response.json;
@@ -59,6 +69,7 @@ export default {
       { key: 'id', label: 'Handle' },
       { key: 'displayName', label: 'Display Name' },
     ],
+    canPaginate: true,
   },
   key: 'get_all_assignable_members',
   noun: 'Assignable Members',

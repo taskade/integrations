@@ -1,3 +1,10 @@
+## Unreleased
+
+- Fix: the project dropdown reads the next page of projects when you click "Load more". Before, it showed the first 100 projects again, so a project after the first 100 never showed.
+- Fix: the AI agent, project template and project member dropdowns show more than the first page of rows.
+- Fix: Find Project searches all of your projects, not only the first 100.
+- Each list reads at most 20 pages, so a bad API response cannot make it ask for pages forever.
+
 ## 1.3.0
 
 - New triggers (instant, Taskade Pro plan or higher): New Comment, Task Assigned, New Project, Project Assigned, Member Joined Project.

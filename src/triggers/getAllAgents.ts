@@ -1,14 +1,20 @@
 import { Bundle, ZObject } from 'zapier-platform-core';
 
-import { ApiResponse, parseOk, request } from '../client';
+import { ApiResponse, dropdownPageParams, parseOk, request } from '../client';
 import { spaceField } from '../fields';
 
 const perform = async (z: ZObject, bundle: Bundle) => {
+  // The route returns 20 agents by default. Ask for 100, and read the page that
+  // Zapier asks for when the user clicks "Load more".
+  const params = dropdownPageParams(bundle);
+  if (params == null) {
+    return [];
+  }
+
   const response = await request(z, bundle, {
     method: 'GET',
     path: `/folders/${bundle.inputData.space_id}/agents`,
-    // The route returns 20 agents by default. Ask for more so older agents show too.
-    params: { limit: '100' },
+    params,
   });
 
   const data: ApiResponse = parseOk(z, response.json);
@@ -28,6 +34,7 @@ export default {
       { key: 'id', label: 'ID' },
       { key: 'title', label: 'Name' },
     ],
+    canPaginate: true,
   },
   key: 'get_all_agents',
   noun: 'Agents',

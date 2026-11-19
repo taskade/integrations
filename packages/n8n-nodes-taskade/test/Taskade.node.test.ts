@@ -1,6 +1,7 @@
 import type { IDataObject, IExecuteFunctions, ILoadOptionsFunctions } from 'n8n-workflow';
 import { describe, expect, it } from 'vitest';
 
+import { MAX_PAGES } from '../nodes/Taskade/GenericFunctions';
 import { Taskade, toTaskadeDate } from '../nodes/Taskade/Taskade.node';
 import { createContext } from './helpers';
 
@@ -296,6 +297,38 @@ describe('list search', () => {
     const prompt = await node.methods.listSearch.searchAgents.call(forPrompt as unknown as ILoadOptionsFunctions);
     expect(get.results.map((r) => r.value)).toEqual(['a1']);
     expect(prompt.results.map((r) => r.value)).toEqual(['taa', 'a1']);
+  });
+});
+
+describe('page bound', () => {
+  // An API that ignores `page` and `after` returns the same full page every
+  // time. The fake API throws after 1,000 calls, so a loop without a bound
+  // fails this test instead of running forever.
+  const fullPageForever = () => {
+    let count = 0;
+    return () => {
+      count += 1;
+      if (count > 1000) {
+        throw new Error('runaway loop: more than 1,000 requests');
+      }
+      return { ok: true, items: Array.from({ length: 100 }, (_, n) => ({ id: `r${n}`, handle: `u${n}` })) };
+    };
+  };
+
+  it('stops Get Many tasks with Return All at MAX_PAGES when the API ignores the cursor', async () => {
+    const { output, calls } = await run(
+      { resource: 'task', operation: 'getMany', projectId: 'p1', returnAll: true },
+      fullPageForever(),
+    );
+    expect(calls).toHaveLength(MAX_PAGES);
+    expect(output).toHaveLength(MAX_PAGES * 100);
+  });
+
+  it('stops the project member list at MAX_PAGES when the API ignores the page', async () => {
+    const context = createContext({ authentication: 'accessToken', projectId: 'p1' }, fullPageForever());
+    await node.methods.loadOptions.getProjectMembers.call(context as unknown as ILoadOptionsFunctions);
+    expect(context.calls).toHaveLength(MAX_PAGES);
+    expect(context.calls.at(-1)?.body?.page).toBe(MAX_PAGES);
   });
 });
 

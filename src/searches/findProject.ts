@@ -1,6 +1,6 @@
 import { Bundle, ZObject } from 'zapier-platform-core';
 
-import { ApiResponse, parseOk, request } from '../client';
+import { ApiResponse, listAllPages, parseOk, request } from '../client';
 import { spaceField } from '../fields';
 
 const perform = async (z: ZObject, bundle: Bundle) => {
@@ -9,13 +9,20 @@ const perform = async (z: ZObject, bundle: Bundle) => {
       ? `/folders/${bundle.inputData.space_id}/projects`
       : '/me/projects';
 
-  // Best-effort: widen the page size; matching is client-side over the result set.
-  const response = await request(z, bundle, { method: 'GET', path, params: { limit: '100' } });
+  // The match runs here, over the projects that the API returns. GET /me/projects
+  // is page-numbered, so read each page. GET /folders/{folderId}/projects takes no page parameter.
+  let projects: Array<Record<string, unknown>>;
+  if (bundle.inputData.space_id != null) {
+    const response = await request(z, bundle, { method: 'GET', path, params: { limit: '100' } });
+    const data: ApiResponse = parseOk(z, response.json);
+    projects = data.items ?? [];
+  } else {
+    projects = await listAllPages(z, bundle, path);
+  }
 
-  const data: ApiResponse = parseOk(z, response.json);
   const query = String(bundle.inputData.query ?? '').toLowerCase();
 
-  return (data.items ?? [])
+  return projects
     .filter((project) =>
       String(project.name ?? project.title ?? '')
         .toLowerCase()

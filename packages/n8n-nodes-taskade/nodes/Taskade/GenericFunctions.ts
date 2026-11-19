@@ -72,8 +72,15 @@ export async function taskadeApiRequest(
 }
 
 /**
- * Collects every item of a cursor-paginated v2 list (`listTasks`), or stops at `limit`.
- * The cursor is the ID of the last item on the previous page.
+ * The most pages that one list call reads (10,000 rows at 100 rows a page).
+ * A response that ignores `page` or `after` returns the same full page every
+ * time, and this bound stops the loop.
+ */
+export const MAX_PAGES = 100;
+
+/**
+ * Collects every item of a cursor-paginated v2 list (`listTasks`), or stops at `limit`
+ * or after MAX_PAGES pages. The cursor is the ID of the last item on the previous page.
  */
 export async function taskadeApiRequestCursorItems(
   this: IExecuteFunctions | ILoadOptionsFunctions,
@@ -85,25 +92,29 @@ export async function taskadeApiRequestCursorItems(
   const items: IDataObject[] = [];
   let after: string | undefined;
 
-  for (;;) {
+  for (let page = 1; page <= MAX_PAGES; page++) {
     const response = await taskadeApiRequest.call(this, endpoint, {
       ...body,
       limit: pageSize,
       ...(after === undefined ? {} : { after }),
     });
-    const page = (response.items as IDataObject[] | undefined) ?? [];
-    items.push(...page);
+    const pageItems = (response.items as IDataObject[] | undefined) ?? [];
+    items.push(...pageItems);
     if (limit !== undefined && items.length >= limit) {
       return items.slice(0, limit);
     }
-    if (page.length < pageSize) {
+    if (pageItems.length < pageSize) {
       return items;
     }
-    after = String(page[page.length - 1].id);
+    after = String(pageItems[pageItems.length - 1].id);
   }
+  return items;
 }
 
-/** Collects every item of a page-numbered v2 list (`listMyProjects`, `listTemplates`), or stops at `limit`. */
+/**
+ * Collects every item of a page-numbered v2 list (`listMyProjects`, `listTemplates`),
+ * or stops at `limit` or after MAX_PAGES pages.
+ */
 export async function taskadeApiRequestPagedItems(
   this: IExecuteFunctions | ILoadOptionsFunctions,
   endpoint: string,
@@ -113,7 +124,7 @@ export async function taskadeApiRequestPagedItems(
   const pageSize = 100;
   const items: IDataObject[] = [];
 
-  for (let page = 1; ; page++) {
+  for (let page = 1; page <= MAX_PAGES; page++) {
     const response = await taskadeApiRequest.call(this, endpoint, {
       ...body,
       limit: pageSize,
@@ -128,6 +139,7 @@ export async function taskadeApiRequestPagedItems(
       return items;
     }
   }
+  return items;
 }
 
 /** Sends a numeric string as a number, because number fields reject a string value. */
