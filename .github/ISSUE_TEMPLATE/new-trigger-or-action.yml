@@ -1,0 +1,51 @@
+name: New trigger or action request
+description: Ask for a new Taskade trigger, action or search on Zapier, n8n or Make.
+title: "[Request] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue is public. Do not paste an API token, an email address or a link to a private workspace.
+        The integrations here use the public Taskade API. To see what the API can do today, read the [API overview](https://www.taskade.com/docs/getting-started/api-overview) and the [list of webhook events](https://www.taskade.com/docs/guides/webhooks#supported-events).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What do you need?
+      options:
+        - A trigger (an event in Taskade starts a workflow)
+        - An action (a workflow changes something in Taskade)
+        - A search (a workflow finds something in Taskade)
+    validations:
+      required: true
+  - type: dropdown
+    id: platforms
+    attributes:
+      label: Platforms
+      multiple: true
+      options:
+        - Zapier
+        - n8n
+        - Make
+    validations:
+      required: true
+  - type: textarea
+    id: event-or-action
+    attributes:
+      label: The event or the action
+      description: Which event starts the trigger, or what the action does in Taskade.
+      placeholder: When a task is completed in a project, start a Zap.
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: The use case
+      description: What you want to automate, and why.
+    validations:
+      required: true
+  - type: input
+    id: api-endpoint
+    attributes:
+      label: API endpoint or event, if you know it
+      placeholder: POST /completeTask, or the comment.created event
