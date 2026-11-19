@@ -3,7 +3,8 @@ import { Bundle, ZObject } from 'zapier-platform-core';
 import { ApiResponse, parseOk, request } from '../client';
 import { spaceField } from '../fields';
 
-const TAA_AGENT_ID = 'taa';
+// The id that the API gives the built-in agent (Taskade EVE).
+const BUILT_IN_AGENT_ID = 'taa';
 
 const perform = async (z: ZObject, bundle: Bundle) => {
   const response = await request(z, bundle, {
@@ -20,9 +21,9 @@ const perform = async (z: ZObject, bundle: Bundle) => {
   const query = String(bundle.inputData.query ?? '').toLowerCase();
 
   const agents = (data.items ?? [])
-    // `taa` is the built-in Taskade agent that the API lists first. It is not
-    // one of the user's agents, so a name search must not pick it.
-    .filter((agent) => agent.id !== TAA_AGENT_ID)
+    // The API lists the built-in agent first. It is not one of the user's
+    // agents, so a name search must not pick it.
+    .filter((agent) => agent.id !== BUILT_IN_AGENT_ID)
     .map((agent) => ({
       id: agent.id as string,
       name: (agent.name ?? '') as string,

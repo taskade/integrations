@@ -239,11 +239,11 @@ describe('Taskade Genesis actions and searches', () => {
 });
 
 describe('Review fixes', () => {
-  it('skips the built-in TAA agent and puts an exact name match first', async () => {
+  it('skips the built-in agent and puts an exact name match first', async () => {
     const { z } = fakeZ({
       ok: true,
       items: [
-        { id: 'taa', name: 'Taskade Agent (TAA)', description: 'The general purpose agent', tools: {} },
+        { id: 'taa', name: 'Taskade EVE', description: 'The general purpose agent', tools: {} },
         { id: 'agent-2', name: 'Sales Agent Follow-up', description: '', tools: {} },
         { id: 'agent-1', name: 'Sales Agent', description: '', tools: {} },
       ],
