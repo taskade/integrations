@@ -1,16 +1,16 @@
 # Use Taskade with Make today
 
-The official Taskade app for Make is in review. [PR #34](https://github.com/taskade/integrations/pull/34) holds the app, and [issue #33](https://github.com/taskade/integrations/issues/33) tracks the Make review. Until Make approves it, connect Make and Taskade with the Make HTTP module and a Taskade automation.
+The Taskade app for Make is not listed on Make yet. Its source is in [`packages/make-app-taskade`](../packages/make-app-taskade), and [issue #33](https://github.com/taskade/integrations/issues/33) tracks the submission. Until Make lists it, connect Make and Taskade with the Make HTTP module and a Taskade automation.
 
 **Who it is for:** Make users who want a scenario to add tasks in Taskade, or to start when a task lands in Taskade.
 
 **What it does:** A Make scenario adds tasks to a Taskade project through the Taskade API, and a Taskade automation sends each new task to a Make scenario.
 
-**Before you start:** You need a Taskade account with a verified email and a Make account. The Taskade API takes a personal access token.
+**Before you start:** You need a Taskade account and a Make account. The Taskade API takes a personal access token.
 
 ## Steps
 
-1. In Taskade, open **Settings**, then **API**, and click **Create token** under **Personal access tokens**. Copy the token. It starts with `tskdp_`.
+1. In Taskade, open **Settings**, then **API**, and create a personal access token. Copy the token. It starts with `tskdp_`.
 2. Open the Taskade project for the new tasks. Copy the project ID from the address bar, after `/d/`.
 3. In Make, add the **HTTP** app's **Make a request** module. Set the method to `POST` and the URL to `https://www.taskade.com/api/v2/createTask`.
 4. Add the header `Authorization` with the value `Bearer tskdp_YOUR_TOKEN`. Add the header `Content-Type` with the value `application/json`.
@@ -38,19 +38,16 @@ Answer from Taskade:
 
 ## Check the result
 
-You are done when a Make run adds a task to your project, and a new Taskade task starts your Make scenario. The **When a task is added** trigger waits about 5 minutes after the last edit of a task.
+You are done when a Make run adds a task to your project, and a new Taskade task starts your Make scenario.
 
 ## Notes
 
 - Anyone who can edit the scenario can read the token in the header. Give the token its own name, such as `make`, and revoke it in **Settings** > **API** when you stop.
 - `createTask` takes 1 to 20 tasks per call, and each `content` holds up to 2,000 characters. `placement` is `beforeend` (last) or `afterbegin` (first).
-- For Taskade events such as a task assigned or a comment added, paste the Make URL into **Settings** > **API** > **Outgoing webhooks** (Pro and above). No automation is needed for those events.
-
-## Taskade EVE can build this for you
-
-> Build an automation that sends every new task in my Leads project to my Make webhook URL.
+- Taskade webhook events, such as a task assigned or a comment added, need the Pro plan or higher. The [webhooks guide](https://www.taskade.com/docs/guides/webhooks) shows how to send them to a URL.
 
 ## Checked
 
-- Taskade steps, labels and the `createTask` body: checked against the Taskade app and the [v2 spec](https://www.taskade.com/api/documentation/v2) on 2026-10-22.
+- Taskade steps and labels: taken from the Taskade app on 2026-10-22.
+- The `createTask` call, its body, its limits and its answer: the same as in the Zapier app and the n8n node in this repository.
 - Make labels (**HTTP**, **Make a request**, **Custom webhook**, **JSON**, **Create JSON**, **JSON string**): taken from Make's public docs. Not checked in a Make account.

@@ -1,6 +1,6 @@
 # Connect Square to Taskade
 
-Square has no Taskade integration yet. A Taskade webhook and the **Send HTTP Request** step with your Square access token cover the common jobs today.
+This repository has no Square app. A Taskade webhook and the **Send HTTP Request** step with your Square access token cover the common jobs.
 
 **Who it is for:** Shops, studios and service teams that take payments in Square and track orders or clients in Taskade.
 
@@ -33,18 +33,13 @@ You are done when a Square test payment adds a task, and the **Send HTTP Request
 
 ## Notes
 
-- Square signs each event with its own header, and Taskade does not read that header. Thus the Taskade URL is the only key. Keep it private, and do not paste it into a page or a chat.
-- Put the Square token only in the **Authentication** panel, never in **Headers**. Taskade saves headers as plain text in the automation.
+- With **Verify requests** set to **None**, the Taskade URL is the only key. Keep it private, and do not paste it into a page or a chat.
+- Put the Square token only in the **Authentication** panel. Do not type it into **Headers**.
 - To go live, change both the token and the host. Use your production access token and `https://connect.squareup.com/v2/customers`. A Sandbox token fails on the production host, and a production token creates real customers.
 - The **Only continue if...** step skips a payment that is not complete. It does not stop a duplicate task. Square retries an event that it did not see delivered, and a completed payment can send `payment.updated` again, for example after a refund. Thus one payment can add more than one task. The payment ID in the task text helps you find a duplicate.
-- If the automation is off, the webhook URL answers 404, and Square retries the event.
-
-## Taskade EVE can build this for you
-
-> Build an automation that adds a task to my Orders project each time Square sends a completed payment to my webhook.
 
 ## Checked
 
-- Taskade steps, labels and webhook behavior: checked against the Taskade app on 2026-10-22.
-- Square facts (Developer Console labels, the `payment.updated` event and its payload paths, the Sandbox and production hosts, `/v2/customers` and its fields, the `Square-Version` header, the Square signature header, retries): taken from Square's public docs. Not checked in a Square account.
-- A nested field such as `data.object.payment.status` in **Parameters**: the field builder supports nested objects, but this recipe was not run end to end.
+- Taskade steps and labels: taken from the Taskade app on 2026-10-22.
+- Square facts (Developer Console labels, the `payment.updated` event and its payload paths, the Sandbox and production hosts, `/v2/customers` and its fields, the `Square-Version` header, retries): taken from Square's public docs. Not checked in a Square account.
+- A nested field such as `data.object.payment.status` in **Parameters** was not tested end to end.
