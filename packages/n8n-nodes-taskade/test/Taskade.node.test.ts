@@ -288,8 +288,8 @@ describe('list search', () => {
     ]);
   });
 
-  it('offers the built-in taa agent only for Prompt', async () => {
-    const agents = () => ({ ok: true, items: [{ id: 'taa', name: 'Taskade Agent (TAA)' }, { id: 'a1', name: 'Triage' }] });
+  it('offers the built-in agent only for Prompt', async () => {
+    const agents = () => ({ ok: true, items: [{ id: 'taa', name: 'Taskade EVE' }, { id: 'a1', name: 'Triage' }] });
     const forGet = createContext({ authentication: 'accessToken', spaceId: 's1', operation: 'get' }, agents);
     const forPrompt = createContext({ authentication: 'accessToken', spaceId: 's1', operation: 'prompt' }, agents);
     const get = await node.methods.listSearch.searchAgents.call(forGet as unknown as ILoadOptionsFunctions);
