@@ -14,6 +14,10 @@ The open source Taskade apps for Zapier, n8n and Make, built on the public Taska
 
 Two more platforms keep their own Taskade apps in their own repositories: [Taskade on Activepieces](https://www.activepieces.com/pieces/taskade) and [Taskade on Pipedream](https://pipedream.com/apps/taskade).
 
+## Recipes
+
+Step-by-step recipes connect Taskade with Make, n8n, Square and other apps that have an API key. They use a Taskade automation and the Public Action API v2. Start at the [recipes index](recipes/README.md).
+
 ## What ships today
 
 Every name below comes from the code in this repository. The [Zapier app reference](#zapier-app-reference) lists the Zapier keys.
