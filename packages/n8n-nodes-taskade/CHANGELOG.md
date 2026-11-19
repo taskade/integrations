@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix: a list call reads at most 100 pages (10,000 rows). Before, a response that ignored `page` or `after` made Return All and the member and template dropdowns ask for pages forever.
+
 ## 1.0.1
 
 - No change to the node. This release is the first one from GitHub Actions through npm trusted publishing (OIDC), with no npm token.

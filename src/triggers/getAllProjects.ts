@@ -1,5 +1,7 @@
 import { Bundle, ZObject } from 'zapier-platform-core';
 
+import { dropdownPageParams } from '../client';
+
 interface Project {
   id: string;
   name: string;
@@ -19,6 +21,13 @@ type ProjectsResponse = ProjectsResponseOk | ProjectsResponseError;
 
 const perform = async (z: ZObject, bundle: Bundle) => {
   if (bundle.inputData.space_id == null) {
+    // GET /me/projects is page-numbered. Zapier asks for the next page when the
+    // user clicks "Load more", so read the page that Zapier asks for.
+    const params = dropdownPageParams(bundle);
+    if (params == null) {
+      return [];
+    }
+
     const response = await z.request({
       url: `https://www.taskade.com/api/v1/me/projects`,
       method: 'GET',
@@ -27,6 +36,7 @@ const perform = async (z: ZObject, bundle: Bundle) => {
         'content-type': 'application/json',
         authorization: `Bearer ${bundle.authData.access_token}`,
       },
+      params,
     });
 
     const data: ProjectsResponse = response.json;
@@ -36,6 +46,13 @@ const perform = async (z: ZObject, bundle: Bundle) => {
     }
 
     return data.items.map((i) => ({ id: i.id, title: i.name }));
+  }
+
+  // GET /folders/{folderId}/projects takes no page parameter, so a later page
+  // has no new projects. Return no rows for it, so "Load more" does not show
+  // the same projects again.
+  if ((bundle.meta?.page ?? 0) > 0) {
+    return [];
   }
 
   const response = await z.request({
