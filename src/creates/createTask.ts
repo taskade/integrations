@@ -235,7 +235,7 @@ export default {
   noun: 'Task',
   display: {
     label: 'Create Task',
-    description: 'Creates a Task in Taskade',
+    description: 'Creates a task in a Taskade project.',
     hidden: false,
   },
   operation: {
@@ -296,7 +296,7 @@ export default {
       },
       {
         key: 'member_id',
-        label: 'Assign to',
+        label: 'Assign To',
         type: 'string',
         dynamic: 'get_all_assignable_members.id.displayName',
         required: false,

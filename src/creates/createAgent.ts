@@ -54,7 +54,7 @@ export default {
         default: 'Tasker',
         required: true,
         helpText:
-          'The agent template to start from. Any valid Taskade persona works — this list shows common ones.',
+          'The agent template to start from. This list shows common personas. You can also enter another valid Taskade persona.',
       },
     ],
     perform,

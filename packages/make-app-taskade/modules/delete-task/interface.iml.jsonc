@@ -1,0 +1,7 @@
+[
+	{
+		"name": "taskId",
+		"type": "text",
+		"label": "Deleted task ID"
+	}
+]

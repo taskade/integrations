@@ -1,0 +1,40 @@
+[
+	{
+		"name": "projectId",
+		"type": "select",
+		"label": "Project",
+		"required": true,
+		"help": "Select one of the projects you viewed recently, or map a project ID.",
+		"options": {
+			"store": "rpc://list-projects",
+			"nested": [
+				{
+					"name": "taskId",
+					"type": "select",
+					"label": "Task",
+					"required": true,
+					"options": "rpc://list-tasks"
+				}
+			]
+		}
+	},
+	{
+		"name": "date",
+		"type": "date",
+		"label": "Date",
+		"required": true
+	},
+	{
+		"name": "allDay",
+		"type": "boolean",
+		"label": "All day",
+		"default": false,
+		"help": "Send only the date, without a time. The date is read in the timezone of your Make profile."
+	},
+	{
+		"name": "timezone",
+		"type": "text",
+		"label": "Timezone",
+		"help": "For a date with a time: an IANA timezone name, for example `America/New_York`. Leave empty to use UTC."
+	}
+]

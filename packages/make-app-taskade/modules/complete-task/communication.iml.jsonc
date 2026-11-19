@@ -1,0 +1,11 @@
+{
+	"url": "/v2/completeTask",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

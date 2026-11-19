@@ -1,0 +1,17 @@
+[
+	{
+		"name": "id",
+		"type": "text",
+		"label": "AI agent ID"
+	},
+	{
+		"name": "name",
+		"type": "text",
+		"label": "Name"
+	},
+	{
+		"name": "description",
+		"type": "text",
+		"label": "Description"
+	}
+]

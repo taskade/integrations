@@ -1,0 +1,45 @@
+[
+	{
+		"name": "projectId",
+		"type": "select",
+		"label": "Project",
+		"required": true,
+		"help": "Select one of the projects you viewed recently, or map a project ID.",
+		"options": {
+			"store": "rpc://list-projects",
+			"nested": [
+				{
+					"name": "taskId",
+					"type": "select",
+					"label": "Task",
+					"required": true,
+					"options": "rpc://list-tasks"
+				}
+			]
+		}
+	},
+	{
+		"name": "note",
+		"type": "text",
+		"label": "Note",
+		"required": true,
+		"help": "One line of text. Line breaks are not allowed."
+	},
+	{
+		"name": "contentType",
+		"type": "select",
+		"label": "Format",
+		"default": "text/markdown",
+		"required": true,
+		"options": [
+			{
+				"label": "Markdown",
+				"value": "text/markdown"
+			},
+			{
+				"label": "Plain text",
+				"value": "text/plain"
+			}
+		]
+	}
+]

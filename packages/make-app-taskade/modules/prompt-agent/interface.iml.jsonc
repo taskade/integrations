@@ -1,0 +1,12 @@
+[
+	{
+		"name": "agentId",
+		"type": "text",
+		"label": "AI agent ID"
+	},
+	{
+		"name": "response",
+		"type": "text",
+		"label": "Response"
+	}
+]

@@ -77,7 +77,7 @@ export const NewComment = makePublicWebhookTrigger({
   key: 'new_comment',
   noun: 'Comment',
   label: 'New Comment',
-  description: 'Triggers when a comment is added to a task.',
+  description: 'Triggers when a comment is added to a task. Requires a Taskade Pro plan or higher.',
   triggerType: 'comment.created',
   sample: {
     projectName: 'Customer Projects',
@@ -86,7 +86,7 @@ export const NewComment = makePublicWebhookTrigger({
     nodeText: 'Follow up with the client',
     commenterDisplayName: 'Jane Doe',
     commenterHandle: 'janedoe',
-    commentBody: 'Done — sent the proposal.',
+    commentBody: 'Done. I sent the proposal.',
     commentBodyType: 'text/markdown',
     assignees: [],
     mentionedHandles: [],
@@ -107,7 +107,7 @@ export const TaskAssigned = makePublicWebhookTrigger({
   key: 'task_assigned',
   noun: 'Task Assignment',
   label: 'Task Assigned',
-  description: 'Triggers when tasks are assigned to someone.',
+  description: 'Triggers when tasks are assigned to someone. Requires a Taskade Pro plan or higher.',
   triggerType: 'task.assigned',
   sample: {
     projectName: 'Customer Projects',
@@ -136,7 +136,7 @@ export const NewProject = makePublicWebhookTrigger({
   key: 'new_project',
   noun: 'Project',
   label: 'New Project',
-  description: 'Triggers when a project is created.',
+  description: 'Triggers when a project is created. Requires a Taskade Pro plan or higher.',
   triggerType: 'project.created',
   sample: {
     spaceName: 'Acme Workspace',
@@ -158,7 +158,7 @@ export const ProjectAssigned = makePublicWebhookTrigger({
   key: 'project_assigned',
   noun: 'Project Assignment',
   label: 'Project Assigned',
-  description: 'Triggers when a project is assigned to someone.',
+  description: 'Triggers when a project is assigned to someone. Requires a Taskade Pro plan or higher.',
   triggerType: 'project.assigned',
   sample: {
     spaceName: 'Acme Workspace',
@@ -182,7 +182,7 @@ export const ProjectJoined = makePublicWebhookTrigger({
   key: 'project_joined',
   noun: 'Project Member',
   label: 'Member Joined Project',
-  description: 'Triggers when someone joins a project.',
+  description: 'Triggers when someone joins a project. Requires a Taskade Pro plan or higher.',
   triggerType: 'project.joined',
   sample: {
     spaceId: '1UsRFaZu9XgyTFej',

@@ -1,0 +1,37 @@
+[
+	{
+		"name": "spaceId",
+		"type": "text",
+		"label": "Workspace ID"
+	},
+	{
+		"name": "spaceName",
+		"type": "text",
+		"label": "Workspace name"
+	},
+	{
+		"name": "projectId",
+		"type": "text",
+		"label": "Project ID"
+	},
+	{
+		"name": "projectName",
+		"type": "text",
+		"label": "Project name"
+	},
+	{
+		"name": "assignerName",
+		"type": "text",
+		"label": "Assigned by"
+	},
+	{
+		"name": "assigneeName",
+		"type": "text",
+		"label": "Assignee name"
+	},
+	{
+		"name": "assigneeId",
+		"type": "number",
+		"label": "Assignee user ID"
+	}
+]

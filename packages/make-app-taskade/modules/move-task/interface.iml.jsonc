@@ -1,0 +1,12 @@
+[
+	{
+		"name": "id",
+		"type": "text",
+		"label": "Task ID"
+	},
+	{
+		"name": "completed",
+		"type": "boolean",
+		"label": "Completed"
+	}
+]

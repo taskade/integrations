@@ -1,0 +1,50 @@
+[
+	{
+		"name": "projectId",
+		"type": "text",
+		"label": "Project ID"
+	},
+	{
+		"name": "projectName",
+		"type": "text",
+		"label": "Project name"
+	},
+	{
+		"name": "assignerName",
+		"type": "text",
+		"label": "Assigned by"
+	},
+	{
+		"name": "assignedNodes",
+		"type": "array",
+		"label": "Assigned tasks",
+		"spec": {
+			"type": "collection",
+			"spec": [
+				{
+					"name": "nodeId",
+					"type": "text",
+					"label": "Task ID"
+				},
+				{
+					"name": "nodeText",
+					"type": "text",
+					"label": "Task text"
+				},
+				{
+					"name": "isCompleted",
+					"type": "boolean",
+					"label": "Completed"
+				},
+				{
+					"name": "assignees",
+					"type": "array",
+					"label": "Assignees",
+					"spec": {
+						"type": "text"
+					}
+				}
+			]
+		}
+	}
+]

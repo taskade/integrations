@@ -1,0 +1,15 @@
+{
+	"url": "/v2/moveTask",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"taskId": "{{parameters.taskId}}",
+		"target": {
+			"taskId": "{{parameters.targetTaskId}}",
+			"position": "{{parameters.position}}"
+		}
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

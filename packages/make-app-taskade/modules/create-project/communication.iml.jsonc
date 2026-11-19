@@ -1,0 +1,12 @@
+{
+	"url": "/v2/createProject",
+	"method": "POST",
+	"body": {
+		"spaceId": "{{ifempty(parameters.folderId, parameters.spaceId)}}",
+		"contentType": "text/markdown",
+		"content": "{{parameters.content}}"
+	},
+	"response": {
+		"output": "{{body.item}}"
+	}
+}

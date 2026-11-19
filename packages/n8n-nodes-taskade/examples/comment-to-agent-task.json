@@ -1,0 +1,52 @@
+{
+  "name": "Taskade: answer new comments with an AI agent",
+  "nodes": [
+    {
+      "parameters": {
+        "event": "comment.created",
+        "spaceIds": []
+      },
+      "name": "Taskade Trigger",
+      "type": "n8n-nodes-taskade.taskadeTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "credentials": { "taskadeApi": { "id": "", "name": "Taskade API" } }
+    },
+    {
+      "parameters": {
+        "resource": "agent",
+        "operation": "prompt",
+        "spaceId": { "__rl": true, "mode": "id", "value": "YOUR_WORKSPACE_ID" },
+        "agentId": { "__rl": true, "mode": "id", "value": "YOUR_AGENT_ID" },
+        "prompt": "=Draft a short, helpful reply to this comment on the task \"{{ $json.nodeText }}\":\n\n{{ $json.commentBody }}"
+      },
+      "name": "Ask the agent",
+      "type": "n8n-nodes-taskade.taskade",
+      "typeVersion": 1,
+      "position": [240, 0],
+      "credentials": { "taskadeApi": { "id": "", "name": "Taskade API" } }
+    },
+    {
+      "parameters": {
+        "resource": "task",
+        "operation": "create",
+        "projectId": { "__rl": true, "mode": "id", "value": "={{ $('Taskade Trigger').item.json.projectId }}" },
+        "content": "=Suggested reply: {{ $json.response }}",
+        "contentType": "text/markdown",
+        "options": {
+          "relativeTaskId": "={{ $('Taskade Trigger').item.json.nodeId }}",
+          "placement": "beforeend"
+        }
+      },
+      "name": "Add the reply as a subtask",
+      "type": "n8n-nodes-taskade.taskade",
+      "typeVersion": 1,
+      "position": [480, 0],
+      "credentials": { "taskadeApi": { "id": "", "name": "Taskade API" } }
+    }
+  ],
+  "connections": {
+    "Taskade Trigger": { "main": [[{ "node": "Ask the agent", "type": "main", "index": 0 }]] },
+    "Ask the agent": { "main": [[{ "node": "Add the reply as a subtask", "type": "main", "index": 0 }]] }
+  }
+}

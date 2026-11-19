@@ -9,7 +9,8 @@ const perform = async (z: ZObject, bundle: Bundle) => {
     path: '/projects',
     body: {
       folderId: bundle.inputData.space_id,
-      contentType: (bundle.inputData.content_type as string) ?? 'text/markdown',
+      // The endpoint accepts only Markdown. Plain text is valid Markdown.
+      contentType: 'text/markdown',
       content: bundle.inputData.content as string,
     },
   });
@@ -35,15 +36,8 @@ export default {
         label: 'Content',
         type: 'text',
         required: true,
-        helpText: 'Markdown content for the project, e.g. a title line followed by tasks.',
-      },
-      {
-        key: 'content_type',
-        label: 'Format',
-        type: 'string',
-        choices: { 'text/markdown': 'Markdown', 'text/plain': 'Plain text' },
-        default: 'text/markdown',
-        required: false,
+        helpText:
+          'The project text in Markdown, for example a title line followed by a list of tasks.',
       },
     ],
     perform,

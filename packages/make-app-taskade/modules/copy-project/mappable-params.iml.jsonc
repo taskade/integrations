@@ -1,0 +1,34 @@
+[
+	{
+		"name": "projectId",
+		"type": "select",
+		"label": "Project",
+		"required": true,
+		"help": "Select one of the projects you viewed recently, or map a project ID.",
+		"options": "rpc://list-projects"
+	},
+	{
+		"name": "spaceId",
+		"type": "select",
+		"label": "Destination workspace",
+		"required": true,
+		"options": {
+			"store": "rpc://list-workspaces",
+			"nested": [
+				{
+					"name": "folderId",
+					"type": "select",
+					"label": "Folder",
+					"help": "Optional. Leave empty to use the workspace itself.",
+					"options": "rpc://list-folders"
+				}
+			]
+		}
+	},
+	{
+		"name": "projectTitle",
+		"type": "text",
+		"label": "Title",
+		"help": "Optional. Leave empty to keep the title of the original project."
+	}
+]

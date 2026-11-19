@@ -1,0 +1,47 @@
+[
+	{
+		"label": "Tasks",
+		"modules": [
+			"watch-tasks-due",
+			"watch-task-assignments",
+			"watch-comments",
+			"create-task",
+			"update-task",
+			"complete-task",
+			"move-task",
+			"assign-task",
+			"set-task-date",
+			"set-task-note",
+			"set-task-field",
+			"delete-task",
+			"list-tasks"
+		]
+	},
+	{
+		"label": "Projects",
+		"modules": [
+			"watch-projects",
+			"watch-project-assignments",
+			"watch-project-members",
+			"create-project",
+			"create-project-from-template",
+			"copy-project",
+			"get-project",
+			"list-projects"
+		]
+	},
+	{
+		"label": "AI agents",
+		"modules": [
+			"prompt-agent",
+			"generate-agent",
+			"list-agents"
+		]
+	},
+	{
+		"label": "Other",
+		"modules": [
+			"make-api-call"
+		]
+	}
+]

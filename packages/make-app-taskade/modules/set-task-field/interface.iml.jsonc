@@ -1,0 +1,12 @@
+[
+	{
+		"name": "taskId",
+		"type": "text",
+		"label": "Task ID"
+	},
+	{
+		"name": "fieldId",
+		"type": "text",
+		"label": "Custom field ID"
+	}
+]

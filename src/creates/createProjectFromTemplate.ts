@@ -22,7 +22,7 @@ export default {
   key: 'create_project_from_template',
   noun: 'Project',
   display: {
-    label: 'Create Project from Template',
+    label: 'Create Project From Template',
     description: 'Creates a new project from an existing template in a folder.',
     hidden: false,
   },

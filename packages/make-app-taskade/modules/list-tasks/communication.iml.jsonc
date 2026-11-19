@@ -1,0 +1,21 @@
+{
+	"url": "/v2/listTasks",
+	"method": "POST",
+	"body": {
+		"projectId": "{{parameters.projectId}}",
+		"limit": 100
+	},
+	"response": {
+		"iterate": "{{body.items}}",
+		"output": "{{item}}",
+		"limit": "{{parameters.limit}}"
+	},
+	"pagination": {
+		"body": {
+			"projectId": "{{parameters.projectId}}",
+			"limit": 100,
+			"after": "{{get(last(body.items), 'id')}}"
+		},
+		"condition": "{{length(body.items) >= 100}}"
+	}
+}
