@@ -1,6 +1,7 @@
 {
 	"url": "https://www.taskade.com/api/v2/webhooks/{{encodeURL(webhook.externalHookId)}}",
 	"method": "DELETE",
+	"body": {},
 	"headers": {
 		"Authorization": "Bearer {{connection.accessToken}}"
 	},
