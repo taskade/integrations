@@ -229,6 +229,10 @@ for (const id of Object.keys(components.webhook)) {
       }
     });
   }
+  // Make sends `Content-Type: application/json` on a detach, and Taskade answers 400 to a
+  // JSON request with an empty body, so the webhook stays. Send `{}`.
+  const detach = code[`webhook.${id}.detach`];
+  if (detach?.method === 'DELETE' && detach.body == null) fail(`webhook.${id}.detach: a DELETE needs "body": {}`);
 }
 // "Deploy to Make" creates a module or RPC with its local ID as the name, and refuses
 // an ID with a dash (Make Apps Editor 2.9.0, validate-id.js).
