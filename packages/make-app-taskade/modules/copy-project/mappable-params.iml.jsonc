@@ -5,7 +5,7 @@
 		"label": "Project",
 		"required": true,
 		"help": "Select one of the projects you viewed recently, or map a project ID.",
-		"options": "rpc://list-projects"
+		"options": "rpc://listProjects"
 	},
 	{
 		"name": "spaceId",
@@ -13,14 +13,14 @@
 		"label": "Destination workspace",
 		"required": true,
 		"options": {
-			"store": "rpc://list-workspaces",
+			"store": "rpc://listWorkspaces",
 			"nested": [
 				{
 					"name": "folderId",
 					"type": "select",
 					"label": "Folder",
 					"help": "Optional. Leave empty to use the workspace itself.",
-					"options": "rpc://list-folders"
+					"options": "rpc://listFolders"
 				}
 			]
 		}

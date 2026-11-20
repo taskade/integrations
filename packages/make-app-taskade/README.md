@@ -14,7 +14,7 @@ To publish the app, follow [SUBMISSION.md](SUBMISSION.md).
 | Actions | Create a Task, Update a Task, Complete a Task, Move a Task, Assign a Task, Set a Task Date, Set a Task Note, Set a Task Custom Field, Delete a Task, Create a Project, Create a Project from a Template, Copy a Project, Get a Project, Prompt an AI Agent, Generate an AI Agent |
 | Searches | List Tasks (cursor paging), List Projects, List AI Agents |
 | Universal | Make an API Call (the user enters a path, the host `https://www.taskade.com/api` is fixed) |
-| RPCs | list-workspaces, list-folders, list-projects, list-tasks, list-agents, list-fields, list-members, list-templates |
+| RPCs | listWorkspaces, listFolders, listProjects, listTasks, listAgents, listFields, listMembers, listTemplates |
 
 ## Layout
 

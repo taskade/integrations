@@ -5,7 +5,7 @@
 		"label": "Workspace",
 		"required": true,
 		"options": {
-			"store": "rpc://list-workspaces",
+			"store": "rpc://listWorkspaces",
 			"nested": [
 				{
 					"name": "folderId",
@@ -13,14 +13,14 @@
 					"label": "Folder",
 					"help": "Optional. Leave empty to use the workspace itself.",
 					"options": {
-						"store": "rpc://list-folders",
+						"store": "rpc://listFolders",
 						"nested": [
 							{
 								"name": "templateId",
 								"type": "select",
 								"label": "Template",
 								"required": true,
-								"options": "rpc://list-templates"
+								"options": "rpc://listTemplates"
 							}
 						],
 						"placeholder": {
@@ -31,7 +31,7 @@
 									"type": "select",
 									"label": "Template",
 									"required": true,
-									"options": "rpc://list-templates"
+									"options": "rpc://listTemplates"
 								}
 							]
 						}

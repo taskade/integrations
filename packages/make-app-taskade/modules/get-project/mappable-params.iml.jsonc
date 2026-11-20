@@ -5,6 +5,6 @@
 		"label": "Project",
 		"required": true,
 		"help": "Select one of the projects you viewed recently, or map a project ID.",
-		"options": "rpc://list-projects"
+		"options": "rpc://listProjects"
 	}
 ]
