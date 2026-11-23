@@ -1,5 +1,6 @@
-## Unreleased
+## 1.3.1
 
+- Fix: Create Task gives the outputs `nodeID` (the task ID) and `document__id` (the project ID) again, as in 1.0.x. A Zap that maps these values to a later step keeps them after the move to this version.
 - Fix: the project dropdown reads the next page of projects when you click "Load more". Before, it showed the first 100 projects again, so a project after the first 100 never showed.
 - Fix: the AI agent, project template and project member dropdowns show more than the first page of rows.
 - Fix: Find Project searches all of your projects, not only the first 100.
