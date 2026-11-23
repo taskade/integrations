@@ -66,7 +66,7 @@ describe('action: create_task', () => {
       z,
       fakeBundle({ inputData: { project_id: 'project-1', content: 'Send the proposal' } }),
     );
-    expect(result).toEqual({ taskId: 'task-1' });
+    expect(result).toEqual({ taskId: 'task-1', nodeID: 'task-1', document: { id: 'project-1' } });
     expect(calls).toHaveLength(1);
     expect(calls[0].url).toBe('https://www.taskade.com/api/v1/projects/project-1/tasks');
     expect(JSON.parse(calls[0].body ?? '{}')).toEqual({

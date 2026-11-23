@@ -227,7 +227,8 @@ const perform = async (z: ZObject, bundle: Bundle) => {
     }
   }
 
-  return { taskId };
+  // nodeID and document.id keep the Create Task outputs of 1.0.x, so Zaps moved from 1.0.9 keep their mapped values.
+  return { taskId, nodeID: taskId, document: { id: bundle.inputData.project_id } };
 };
 
 export default {
@@ -306,8 +307,14 @@ export default {
     ],
     sample: {
       taskId: '099630d4-267e-4b22-894b-08b69f3a4d79',
+      nodeID: '099630d4-267e-4b22-894b-08b69f3a4d79',
+      document: { id: '77WDhinRapyT5FY8' },
     },
-    outputFields: [{ key: 'taskId' }],
+    outputFields: [
+      { key: 'taskId', label: 'Task ID' },
+      { key: 'nodeID', label: 'Task ID (legacy)' },
+      { key: 'document__id', label: 'Project ID' },
+    ],
     perform: perform,
   },
 };
